@@ -62,7 +62,7 @@ $essence->extract($input);
 
 ### SplFileInfo
 ```php
-$input = new SplFileInfo('input.csv')
+$input = new SplFileInfo('input.csv');
 
 $essence->extract($input);
 ```
@@ -82,7 +82,7 @@ $essence->extract($input, array(
 
 ### delimiter, enclosure & escape
 Sometimes, CSV data can have a slightly different format, depending on the vendor or person who created the data.
-By default, the `delimiter` is set to `,` (comma), `enclosure` is set to `"` (double quote) and `escape` is set to `\` (backslash).
+By default, the `delimiter` is set to `,` (comma), the `enclosure` is set to `"` (double quote) and the `escape` is set to `\` (backslash).
 
 So, to extract the following data
 ```
@@ -100,8 +100,8 @@ $essence->extract($input, array(
 ```
 
 ### exceptions
-Exceptions are thrown by **default** when we try to extract data from an invalid column index.
-This might happen because of an error in the map (wrong column index) or bad data (one of the lines in the CSV has less columns).
+An `EssenceException` is thrown by **default** when we try to extract data from an invalid column index.
+This might happen because of an invalid map (wrong column index) or bad data (some lines in the CSV have less columns).
 
 If it's the second case, we probably want to continue parsing the data, ignoring invalid lines.
 ```php

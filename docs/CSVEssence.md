@@ -43,7 +43,7 @@ try {
 
 
 ## Input types
-The `extract()` method allows us to extract CSV data from a few input types.
+The `extract()` method allows us to consume CSV data from a few input types.
 Currently supported are `string`, `resource` (normally a result of a `fopen()`) and `SplFileInfo`.
 
 ### String

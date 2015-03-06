@@ -1,4 +1,7 @@
 # Essence
+[![Latest Stable Version](https://poser.pugx.org/impensavel/essence/v/stable.svg)](https://packagist.org/packages/impensavel/essence)
+[![Build Status](https://travis-ci.org/impensavel/essence.svg?branch=master)](https://travis-ci.org/impensavel/essence)
+
 A PHP library to simplify data extraction from CSV and XML sources.
 
 This library aims for [PSR-1][], [PSR-2][] and [PSR-4][] standards compliance.

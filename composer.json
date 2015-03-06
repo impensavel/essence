@@ -1,0 +1,31 @@
+{
+    "name": "impensavel/essence",
+    "type": "library",
+    "description": "Essence - Data extraction library",
+    "keywords": [
+        "essence",
+        "data",
+        "extraction",
+        "csv",
+        "xml"
+    ],
+    "homepage": "https://github.com/impensavel/essence",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Quetzy Garcia",
+            "email": "quetzyg@impensavel.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Impensavel\\Essence\\": "src/"
+        }
+    }
+}

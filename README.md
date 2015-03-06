@@ -15,5 +15,9 @@ This library aims for [PSR-1][], [PSR-2][] and [PSR-4][] standards compliance.
 composer require "impensavel/essence:dev-master"
 ```
 
+## Class documentation
+- [CSVEssence](docs/CSVEssence.md)
+- [XMLEssence](docs/XMLEssence.md)
+
 ## License
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

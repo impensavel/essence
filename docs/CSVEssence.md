@@ -101,7 +101,7 @@ $essence->extract($input, array(
 
 ### exceptions
 An `EssenceException` is thrown by **default** when we try to extract data from an invalid column index.
-This might happen because of an invalid map (wrong column index) or bad data (some lines in the CSV have less columns).
+This might happen because of an invalid map (a wrong column index was set) or bad data (some lines in the CSV have less columns).
 
 If it's the second case, we probably want to continue parsing the data, ignoring invalid lines.
 ```php
@@ -120,7 +120,7 @@ $essence->extract($input, array(
 ```
 
 ## Extra
-Normally, the only data the callback as access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
+Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
 To do that, we can pass it in as the 3rd parameter of the method:
 
 ```php

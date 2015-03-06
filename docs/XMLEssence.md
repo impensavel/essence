@@ -41,7 +41,7 @@ $config = array(
             var_dump($data);
         },
     ),
-];
+);
 
 try
 {

@@ -1,5 +1,5 @@
 # Essence
-A PHP library to simplify extracting data from CSV/XML.
+A PHP library to simplify data extraction from CSV and XML sources.
 
 This library aims for [PSR-1][], [PSR-2][] and [PSR-4][] standards compliance.
 

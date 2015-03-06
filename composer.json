@@ -1,7 +1,7 @@
 {
     "name": "impensavel/essence",
     "type": "library",
-    "description": "Essence - Data extraction library",
+    "description": "A PHP library to simplify data extraction from CSV and XML sources.",
     "keywords": [
         "essence",
         "data",

@@ -22,9 +22,9 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @access  public
      * @return  XMLEssence
      */
-    public function testInstancePass()
+    public function testInstantiationPass()
     {
-        $essence = new XMLEssence([]);
+        $essence = new XMLEssence(array());
 
         $this->assertInstanceOf('\Impensavel\Essence\XMLEssence', $essence);
 

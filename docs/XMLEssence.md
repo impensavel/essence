@@ -130,7 +130,7 @@ $essence->extract($input, array(
 ```
 
 ## Extra
-Normally, the only data the callback as access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
+Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
 To do that, we can pass it in as the 3rd parameter of the method:
 
 ```php

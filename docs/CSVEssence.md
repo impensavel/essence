@@ -1,15 +1,32 @@
 # CSVEssence
-This class handles data extraction from sources with the [Character Separated Values](http://en.wikipedia.org/wiki/Comma-separated_values) format.
+This class allows us to extract tabular data in the [CSV](http://en.wikipedia.org/wiki/Comma-separated_values) format.
 
 ## Usage
-The following example shows how to extract data from a CSV.
+An example of how to use the class is provided in this document, along with an explanation of available options.
 
-### Data
+### Example CSV data
+The following data will be used for all the examples below.
 ```
 email,name,surname
 john@doe.com,john,doe
 jane@doe.com,jane,doe
 ```
+
+### Map
+In order to extract data, a property map must be defined.
+Given the simple nature of the CSV format, only **one** map is required.
+The map must be an associative `array` with each property name as key and the respective column index as the value. 
+
+### Callback
+Besides the map, a callback must also be set. It should be an anonymous function (`Closure`) which accepts an `array` argument with the following structure.
+```php
+array(
+    'properties' => array(), // associative array with extracted properties
+    'extra'      => null,    // extra data passed to the extract() method
+    'line'       => 0,       // line number of the CSV element
+);
+```
+Implement whatever business logic you need to handle this data.
 
 ### Implementation
 ```php
@@ -71,7 +88,7 @@ $essence->extract($input);
 The `extract()` method has a few options that can be used to handle different situations.
 
 ### start_line
-On the example above, the first line of the CSV data is just a header with the column names.
+The first line of the example CSV data is just a header with the column names.
 Since it's not actual data, we can skip it by setting the `start_line` option to `1` (line count starts at `0`).
 
 ```php
@@ -103,7 +120,7 @@ $essence->extract($input, array(
 An `EssenceException` is thrown by **default** when we try to extract data from an invalid column index.
 This might happen because of an invalid map (a wrong column index was set) or bad data (some lines in the CSV have less columns).
 
-If it's the second case, we probably want to continue parsing the data, ignoring invalid lines.
+If it's the second case, we probably want to continue extracting the data, skipping invalid lines.
 ```php
 $essence->extract($input, array(
     'exceptions' => false,
@@ -121,10 +138,22 @@ $essence->extract($input, array(
 
 ## Extra
 Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
-To do that, we can pass it in as the 3rd parameter of the method:
+To do that, we can pass it as the 3rd parameter of the `extract()` method:
 
 ```php
 $extra = Foo::bar();
 
 $essence->extract($input, array(), $extra);
 ```
+
+## Troubleshooting
+
+### CSV files exported from Micro$oft Excel fail to extract
+This is a [known issue](http://superuser.com/questions/349882/how-to-avoid-double-quotes-when-saving-excel-file-as-unicode) and happens when the CSV file is exported with the Unicode format.
+
+The following **sed** one liner should do the trick:
+```bash
+sed 's/.$//; s/^.//; s/""/"/g' input.csv > fixed_input.csv
+```
+
+This will remove the **first** and **last** characters of each line (usually double quotes) and will replace **all** double **double quotes**, with a single **double quote**.

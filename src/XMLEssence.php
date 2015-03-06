@@ -93,11 +93,6 @@ class XMLEssence extends AbstractEssence
         }
 
         $this->reader = new XMLReader();
-
-        if (! $this->reader instanceof XMLReader) {
-            throw new EssenceException('Unable to instantiate XMLReader');
-        }
-
         $this->doc = new DOMDocument();
         $this->element = new DOMXPath($this->doc);
 

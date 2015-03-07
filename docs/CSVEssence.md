@@ -15,18 +15,17 @@ jane@doe.com,jane,doe
 ### Map
 In order to extract data, a property map must be defined.
 Given the simple nature of the CSV format, only **one** map is required.
-The map must be an associative `array` with each property name as key and the respective column index as the value. 
+The map must be an associative `array` with each property name as key and the respective column index as value. 
 
 ### Callback
-Besides the map, a callback must also be set. It should be an anonymous function (`Closure`) which accepts an `array` argument with the following structure.
+Besides the map, a callback must also be set. It should be an anonymous function (`Closure`) which accepts an `array` argument with the following structure:
 ```php
 array(
     'properties' => array(), // associative array with extracted properties
     'extra'      => null,    // extra data passed to the extract() method
-    'line'       => 0,       // line number of the CSV element
+    'line'       => 0,       // line number of the current CSV element
 );
 ```
-Implement whatever business logic you need to handle this data.
 
 ### Implementation
 ```php
@@ -38,7 +37,7 @@ use Impensavel\Essence\CSVEssence;
 use Impensavel\Essence\EssenceException;
 
 $config = array(
-    'map' => array(
+    'map'      => array(
         'name'    => 1, // 2nd column
         'surname' => 2, // 3rd column
         'email'   => 0, // 1st column
@@ -88,14 +87,16 @@ $essence->extract($input);
 The `extract()` method has a few options that can be used to handle different situations.
 
 ### start_line
-The first line of the example CSV data is just a header with the column names.
-Since it's not actual data, we can skip it by setting the `start_line` option to `1` (line count starts at `0`).
+The first line of the CSV data example is just metadata with column names.
+Since it's not actual data, we can skip it by setting the `start_line` option to `1`.
 
 ```php
 $essence->extract($input, array(
     'start_line' => 1,
 ));
 ```
+
+Line and column count always starts at `0` (zero).
 
 ### delimiter, enclosure & escape
 Sometimes, CSV data can have a slightly different format, depending on the vendor or person who created the data.
@@ -129,7 +130,7 @@ $essence->extract($input, array(
 
 ### auto_eol
 Depending on the [OS](http://en.wikipedia.org/wiki/Operating_system) in which the CSV data was created, line endings might not be properly recognised.
-To (try to) solve the issue, the `auto_eol` option should be set to `true`.
+To (try to) solve the issue, set the `auto_eol` option to `true`.
 ```php
 $essence->extract($input, array(
     'auto_eol' => true,
@@ -151,7 +152,7 @@ $essence->extract($input, array(), $extra);
 ### CSV files exported from Micro$oft Excel fail to extract
 This is a [known issue](http://superuser.com/questions/349882/how-to-avoid-double-quotes-when-saving-excel-file-as-unicode) and happens when the CSV file is exported with the Unicode format.
 
-The following **sed** one liner should do the trick:
+Use the following **sed** one liner to fix the file before trying to extract from it:
 ```bash
 sed 's/.$//; s/^.//; s/""/"/g' input.csv > fixed_input.csv
 ```

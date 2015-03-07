@@ -249,7 +249,7 @@ $config = array(
 In other words, the *absolute* XPath of the element we want to skip to, must be returned from the callback we're in.
 
 ### Storing and retrieving element data
-In order to keep track of relations between callbacks, we can store data from one and retrieve from another.
+In order to keep track of relations between callbacks, we can store data from one and retrieve it from another.
 
 ```php
 $config = array(

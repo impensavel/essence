@@ -194,11 +194,13 @@ class XMLEssence extends AbstractEssence
      */
     private function getData($xpath)
     {
+        $xpath = trim($xpath, '/');
+
         if (isset($this->data[$xpath])) {
            return $this->data[$xpath];
         }
 
-        throw new EssenceException('Unregistered Element XPath: "'.$xpath.'"');
+        throw new EssenceException('Unregistered Element XPath: "/'.$xpath.'"');
     }
 
     /**
@@ -270,7 +272,7 @@ class XMLEssence extends AbstractEssence
                 $argument = array(
                     'properties' => array(),
                     'extra'      => $extra,
-                    'element'    => $this->current,
+                    'element'    => '/'.$this->current,
                 );
 
                 foreach ($this->maps[$this->current] as $key => $xpath) {

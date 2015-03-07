@@ -15,7 +15,7 @@ This library aims for [PSR-1][], [PSR-2][] and [PSR-4][] standards compliance.
 
 ## Installation
 ``` bash
-composer require "impensavel/essence:dev-master"
+composer require "impensavel/essence:~1.0"
 ```
 
 ## Class documentation

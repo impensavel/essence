@@ -93,8 +93,9 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     public function testInstantiationPass()
     {
         $essence = new CSVEssence(array(
-            'map' => array(
-                'foo' => 1,
+            'map'      => array(
+                'name'    => 0,
+                'surname' => 1,
             ),
             'callback' => function () {},
         ));
@@ -102,5 +103,43 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Impensavel\Essence\CSVEssence', $essence);
 
         return $essence;
+    }
+
+    /**
+     * Test extract() method to FAIL (invalid column)
+     *
+     * @depends                  testInstantiationPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @return  void
+     */
+    public function testExtractFailInvalidColumns(CSVEssence $essence)
+    {
+        $input = "name,surname\nAnna,Adams\nBob,Bright\nCharles";
+
+        $essence->extract($input);
+    }
+
+    /**
+     * Test extract() method to PASS (skip invalid column)
+     *
+     * @depends testInstantiationPass
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @return  void
+     */
+    public function testExtractPassSkipInvalidColumns(CSVEssence $essence)
+    {
+        $input = "name,surname\nAnna,Adams\nBob,Bright\nCharles";
+
+        $result = $essence->extract($input, array(
+            'exceptions' => false,
+        ));
+
+        $this->assertTrue($result);
     }
 }

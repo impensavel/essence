@@ -181,6 +181,8 @@ class XMLEssence extends AbstractEssence
      */
     private function isMapped($xpath)
     {
+        $xpath = trim($xpath, '/');
+
         return isset($this->maps[$xpath]);
     }
 

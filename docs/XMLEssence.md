@@ -1,10 +1,12 @@
 # XMLEssence
-This class handles data extraction from sources with the [Extensible Markup Language](http://en.wikipedia.org/wiki/XML) format.
+This class allows us to extract data in the [XML](http://en.wikipedia.org/wiki/XML) format.
 
-## Usage
-The following example shows how to extract data from a simple XML.
+## Basic usage
+An example of how to use the class is provided in this document, along with an explanation of available options.
 
-### Data
+### Example XML data
+The following data will be used for all the basic examples below.
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Persons>
@@ -21,6 +23,30 @@ The following example shows how to extract data from a simple XML.
 </Persons>
 ```
 
+### Elements
+In order to extract data and given the more complex nature of the XML format, **at least** one map/callback pair is required.
+
+Each element configuration should be an associative `array`, with the *absolute* XPath of the element as key and an `array` containing the map/callback pair as value.
+```php
+'/xpath' => array(
+    'map'      => array(),
+    'callback' => function ($data) {},
+),
+```
+
+### Map
+The map must be an associative `array` with each property name as key and the respective *relative* XPath as value.
+
+### Callback
+The callback should be an anonymous function (`Closure`) which accepts an `array` argument with the following structure:
+```php
+array(
+    'properties' => array(),  // associative array with extracted properties
+    'extra'      => null,     // extra data passed to the extract() method
+    'element'    => '/xpath', // absolute XPath of the current XML element
+);
+```
+
 ### Implementation
 ```php
 <?php
@@ -31,13 +57,13 @@ use Impensavel\Essence\XMLEssence;
 use Impensavel\Essence\EssenceException;
 
 $config = array(
-    'Persons/Person' => array(
-        'map' => array(
+    '/Persons/Person' => array(
+        'map'      => array(
             'name'    => 'string(Name)',
             'surname' => 'string(Surname)',
             'email'   => 'string(Email)',
         ),
-        'callback'   => function ($data) {
+        'callback' => function ($data) {
             var_dump($data);
         },
     ),
@@ -98,7 +124,7 @@ The `extract()` method has a few options that can be used to handle different si
 
 ### encoding
 The `encoding` option is set to `UTF-8` by default and it should remain so in normal circumstances. 
-In order to use the encoding provided by the document being parsed, set the value to `null`.
+In order to use the encoding defined in the document, set the value to `null`.
 
 ```php
 $essence->extract($input, array(
@@ -119,7 +145,7 @@ $essence->extract($input, array(
 Refer to the [documentation](http://php.net/manual/en/libxml.constants.php) for the complete list of supported `LIBXML_*` constants.
 
 ### namespaces
-For some XML documents, we need to register one or more namespaces in order to parse the data properly.
+For some XML documents, we might need to register a namespace in order to parse the data properly.
 
 ```php
 $essence->extract($input, array(
@@ -138,3 +164,129 @@ $extra = Foo::bar();
 
 $essence->extract($input, array(), $extra);
 ```
+
+## Advanced usage
+In this section we will cover two advanced use cases.
+
+### Example XML data
+The following data will be used for all the advanced examples below.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Persons>
+    <Person>
+        <Name>John</Name>
+        <Surname>Doe</Surname>
+        <Email>john@doe.com</Email>
+        <Addresses>
+            <Address>
+                <Name>Foo Street</Name>
+                <Postcode>A12-3BC</Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+    <Person>
+        <Name>Jane</Name>
+        <Surname>Doe</Surname>
+        <Email>jane@doe.com</Email>
+        <Addresses>
+            <Address>
+                <Name>Bar Street</Name>
+                <Postcode>X89-0YZ</Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+    <Person>
+        <Name>Bob</Name>
+        <Surname></Surname>
+        <Email></Email>
+        <Addresses>
+            <Address>
+                <Name>Baz Street</Name>
+                <Postcode></Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+</Persons>
+```
+
+### Node/element skipping
+Sometimes we need to skip to a specific element if a pre-condition fails.
+A reason for this would be that there's no point in storing data from a child node is we didn't save the parent's data.
+
+On the XML above, the third `Person` element has some missing data and we only want to extract valid/complete data from the set.
+
+The following configuration takes care of that:
+```php
+$config = array(
+    '/Persons/Person' => array(
+        'map'      => array(
+            'name'    => 'string(Name)',
+            'surname' => 'string(Surname)',
+            'email'   => 'string(Email)',
+        ),
+        'callback' => function ($data) {
+            // skip to the next /Persons/Person element if the email is invalid
+            if (filter_var($data['properties']['email'], FILTER_VALIDATE_EMAIL) === false) {
+                return '/Persons/Person';
+            }
+            
+            // store data
+        },
+    ),
+    '/Persons/Person/Addresses/Address' => array(
+        'map'      => array(
+            'address'  => 'string(Name)',
+            'postcode' => 'string(Postcode)',
+        ),
+        'callback' => function ($data) {
+            // store data
+        },
+    ),
+);
+
+```
+In other words, the *absolute* XPath of the element we want to skip to, must be returned from the callback we're in.
+
+### Storing and retrieving element data
+In order to keep track of relations between callbacks, we can store data from one and retrieve from another.
+
+```php
+$config = array(
+    '/Persons/Person' => array(
+        'map'      => array(
+            'name'    => 'string(Name)',
+            'surname' => 'string(Surname)',
+            'email'   => 'string(Email)',
+        ),
+        'callback' => function ($data) {
+            // store data using a Lavavel Person model
+            $person = Person::create($data['properties']);
+            
+            // return the last inserted id
+            return $person->id;
+        },
+    ),
+    '/Persons/Person/Addresses/Address' => array(
+        'map'      => array(
+            // use the last inserted Person id set from 
+            // the other callback to make the relation
+            'person_id' => '#/Persons/Person',
+            'address'   => 'string(Name)',
+            'postcode'  => 'string(Postcode)',
+        ),
+        'callback' => function ($data) {
+            // store data using a Laravel Address model
+            Address::create($data['properties']);
+        },
+    ),
+);
+
+```
+
+When a callback returns, any value than cannot be mapped to an *absolute* XPath (otherwise we would do a skip), will be stored.
+Previous values will be overwritten each time the callback is executed.
+
+On map properties, by passing `#<element XPath>` instead of an XPath expression, the stored value registered to that element XPath will be used instead.
+
+An `EssenceException` will be thrown if the XPath is not registered.

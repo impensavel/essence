@@ -88,7 +88,6 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
         ));
     }
 
-
     /**
      * Test instantiation to FAIL (invalid callback)
      *
@@ -195,7 +194,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      *
      * @depends                  testInstantiationPass
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage Could not open "invalid.csv" for parsing.
+     * @expectedExceptionMessage Could not open "invalid.csv" for parsing
      *
      * @access  public
      * @param   CSVEssence $essence

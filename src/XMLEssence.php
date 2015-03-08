@@ -233,6 +233,12 @@ class XMLEssence extends AbstractEssence
         }
 
         if (is_resource($input)) {
+            $type = get_resource_type($input);
+
+            if ($type != 'stream') {
+                throw new EssenceException('Invalid resource type: '.$type);
+            }
+
             $string = stream_get_contents($input);
 
             if ($string === false) {

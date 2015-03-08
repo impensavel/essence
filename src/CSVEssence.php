@@ -55,7 +55,7 @@ class CSVEssence extends AbstractEssence
                 return $data;
 
             } catch (RuntimeException $e) {
-                throw new EssenceException('Could not open "'.$input->getRealPath().'" for parsing.', 0, $e);
+                throw new EssenceException('Could not open "'.$input->getPathname().'" for parsing.', 0, $e);
             }
         }
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Persons>
+    <Person>
+        <Name>Anna</Name>
+        <Surname>Adams</Surname>
+        <Email>anna.adams@example.com</Email>
+        <Addresses>
+            <Address Type="Home">
+                <Name>Rocky Row</Name>
+                <Postcode>6181</Postcode>
+            </Address>
+            <Address Type="Work">
+                <Name>Round Valley</Name>
+                <Postcode>6781</Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+    <Person>
+        <Name>Bob</Name>
+        <Surname>Brown</Surname>
+        <Email>bob.brown@example.com</Email>
+        <Addresses>
+            <Address Type="Home">
+                <Name>Stony Boulevard</Name>
+                <Postcode>8276</Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+    <Person>
+        <Name>Charles</Name>
+        <Surname>Cooper</Surname>
+        <Email>N/A</Email>
+        <Addresses>
+            <Address Type="Home">
+                <Name>Lazy Fawn Mount</Name>
+                <Postcode>9828</Postcode>
+            </Address>
+            <Address Type="Work">
+                <Name>High Zephyr Impasse</Name>
+                <Postcode>8918</Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+</Persons>

@@ -217,7 +217,7 @@ class XMLEssence extends AbstractEssence
     private function provision($input, array $config)
     {
         if ($input instanceof SplFileInfo) {
-            if (! $this->reader->open($input->getPathname(), $config['encoding'], $config['options'])) {
+            if (! @$this->reader->open($input->getPathname(), $config['encoding'], $config['options'])) {
                 throw new EssenceException('Could not open "'.$input->getPathname().'" for parsing');
             }
 

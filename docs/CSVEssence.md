@@ -129,7 +129,7 @@ $essence->extract($input, array(
 ```
 
 ### auto_eol
-Depending on the [OS](http://en.wikipedia.org/wiki/Operating_system) in which the CSV data was created, line endings might not be properly recognised.
+Depending on the [OS](http://en.wikipedia.org/wiki/Operating_system) in which the CSV data was created, line endings might not be properly recognised when **reading from a file**.
 To (try to) solve the issue, set the `auto_eol` option to `true`.
 ```php
 $essence->extract($input, array(

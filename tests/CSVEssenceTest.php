@@ -12,10 +12,33 @@
 
 namespace Impensavel\Essence;
 
+use SplFileInfo;
+
 use PHPUnit_Framework_TestCase;
 
 class CSVEssenceTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Test input files to PASS (readability)
+     *
+     * @access  public
+     * @return  array
+     */
+    public function testInputFilesPass()
+    {
+        $files = array(
+            __DIR__.'/input/csv/macintosh.csv',
+            __DIR__.'/input/csv/unix.csv',
+            __DIR__.'/input/csv/windows.csv',
+        );
+
+        foreach ($files as $file) {
+            $this->assertTrue(is_readable($file));
+        }
+
+        return $files;
+    }
+
     /**
      * Test instantiation to FAIL (map empty/not set)
      *
@@ -42,7 +65,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     public function testInstantiationFailMapMustBeArray()
     {
         new CSVEssence(array(
-            'map' => 1,
+            'map' => true,
         ));
     }
 
@@ -59,7 +82,8 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     {
         new CSVEssence(array(
             'map' => array(
-                'foo' => 1,
+                'name'    => 0,
+                'surname' => 1,
             ),
         ));
     }
@@ -78,9 +102,10 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     {
         new CSVEssence(array(
             'map'      => array(
-                'foo' => 1,
+                'name'    => 0,
+                'surname' => 1,
             ),
-            'callback' => 1
+            'callback' => true
         ));
     }
 
@@ -106,40 +131,190 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test extract() method to FAIL (invalid column)
+     * Test string extract() method to FAIL (invalid input type)
      *
      * @depends                  testInstantiationPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage Invalid input type: boolean
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @return  void
+     */
+    public function testExtractFailInvalidInputType(CSVEssence $essence)
+    {
+        $essence->extract(true);
+    }
+
+    /**
+     * Test string extract() method to FAIL (invalid column)
+     *
+     * @depends                  testInstantiationPass
+     * @depends                  testInputFilesPass
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
      *
      * @access  public
      * @param   CSVEssence $essence
+     * @param   array      $files
      * @return  void
      */
-    public function testExtractFailInvalidColumns(CSVEssence $essence)
+    public function testExtractStringFailInvalidColumn(CSVEssence $essence, array $files)
     {
-        $input = "name,surname\nAnna,Adams\nBob,Bright\nCharles";
+        $input = file_get_contents(current($files));
 
         $essence->extract($input);
     }
 
     /**
-     * Test extract() method to PASS (skip invalid column)
+     * Test string extract() method to PASS (suppress exceptions)
      *
      * @depends testInstantiationPass
+     * @depends testInputFilesPass
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @param   array      $files
+     * @return  void
+     */
+    public function testExtractStringPassNoExceptions(CSVEssence $essence, array $files)
+    {
+        foreach ($files as $file) {
+            $input = file_get_contents($file);
+
+            $result = $essence->extract($input, array(
+                'exceptions' => false,
+            ));
+
+            $this->assertTrue($result);
+        }
+    }
+
+    /**
+     * Test SplFileInfo extract() method to FAIL (invalid file)
+     *
+     * @depends                  testInstantiationPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage Could not open "invalid.csv" for parsing.
      *
      * @access  public
      * @param   CSVEssence $essence
      * @return  void
      */
-    public function testExtractPassSkipInvalidColumns(CSVEssence $essence)
+    public function testExtractSplFileInfoFailInvalidFile(CSVEssence $essence)
     {
-        $input = "name,surname\nAnna,Adams\nBob,Bright\nCharles";
+        $input = new SplFileInfo('invalid.csv');
 
-        $result = $essence->extract($input, array(
-            'exceptions' => false,
+        $essence->extract($input);
+    }
+
+    /**
+     * Test SplFileInfo extract() method to FAIL (invalid column)
+     *
+     * @depends                  testInstantiationPass
+     * @depends                  testInputFilesPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @param   array      $files
+     * @return  void
+     */
+    public function testExtractSplFileInfoFailInvalidColumn(CSVEssence $essence, array $files)
+    {
+        $input = new SplFileInfo(end($files));
+
+        $essence->extract($input, array(
+            'auto_eol' => true, // detect EOL from macintosh.csv
         ));
+    }
 
-        $this->assertTrue($result);
+    /**
+     * Test SplFileInfo extract() method to PASS (suppress exceptions)
+     *
+     * @depends testInstantiationPass
+     * @depends testInputFilesPass
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @param   array      $files
+     * @return  void
+     */
+    public function testExtractSplFileInfoPassNoExceptions(CSVEssence $essence, array $files)
+    {
+        foreach ($files as $file) {
+            $input = new SplFileInfo($file);
+
+            $result = $essence->extract($input, array(
+                'exceptions' => false,
+            ));
+
+            $this->assertTrue($result);
+        }
+    }
+
+    /**
+     * Test resource extract() method to FAIL (invalid column)
+     *
+     * @depends                  testInstantiationPass
+     * @depends                  testInputFilesPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @param   array      $files
+     * @return  void
+     */
+    public function testExtractResourceFailInvalidColumn(CSVEssence $essence, array $files)
+    {
+        $input = fopen(current($files), 'r');
+
+        $essence->extract($input);
+    }
+
+    /**
+     * Test Resource extract() method to PASS (suppress exceptions)
+     *
+     * @depends testInstantiationPass
+     * @depends testInputFilesPass
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @param   array      $files
+     * @return  void
+     */
+    public function testExtractResourcePassNoExceptions(CSVEssence $essence, array $files)
+    {
+        foreach ($files as $file) {
+            $input = fopen($file, 'r');
+
+            $result = $essence->extract($input, array(
+                'exceptions' => false,
+            ));
+
+            $this->assertTrue($result);
+
+            $this->assertTrue(fclose($input));
+        }
+    }
+
+    /**
+     * Test Resource extract() method to FAIL (invalid resource type)
+     *
+     * @depends                  testInstantiationPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage Invalid resource type: Socket
+     *
+     * @access  public
+     * @param   CSVEssence $essence
+     * @return  void
+     */
+    public function testExtractResourceFailInvalidType(CSVEssence $essence)
+    {
+        $input = socket_create(AF_UNIX, SOCK_STREAM, 0);
+
+        $essence->extract($input);
     }
 }

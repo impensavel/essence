@@ -132,11 +132,7 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
                     'surname' => 'string(Surname)',
                     'email'   => 'string(Email)',
                 ),
-                'callback' => function ($data) {
-                    $this->assertArrayHasKey('properties', $data);
-                    $this->assertArrayHasKey('extra', $data);
-                    $this->assertArrayHasKey('element', $data);
-
+                'callback' => function () {
                     // simulate a last inserted id
                     return rand(1, 100);
                 },
@@ -148,11 +144,7 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
                     'address'   => 'string(Name)',
                     'postcode'  => 'string(Postcode)',
                 ),
-                'callback' => function ($data) {
-                    $this->assertArrayHasKey('properties', $data);
-                    $this->assertArrayHasKey('extra', $data);
-                    $this->assertArrayHasKey('element', $data);
-                },
+                'callback' => function () {},
             ),
         ));
 

@@ -123,7 +123,7 @@ class XMLEssence extends AbstractEssence
         // clear the libXML error buffer
         libxml_clear_errors();
 
-        $node = $this->reader->expand();
+        $node = @$this->reader->expand();
 
         $error = libxml_get_last_error();
 
@@ -217,19 +217,19 @@ class XMLEssence extends AbstractEssence
     private function provision($input, array $config)
     {
         if ($input instanceof SplFileInfo) {
-            if (! @$this->reader->open($input->getPathname(), $config['encoding'], $config['options'])) {
-                throw new EssenceException('Could not open "'.$input->getPathname().'" for parsing');
+            if (@$this->reader->open($input->getPathname(), $config['encoding'], $config['options'])) {
+                return;
             }
 
-            return;
+            throw new EssenceException('Could not open "'.$input->getPathname().'" for parsing');
         }
 
         if (is_string($input)) {
-            if (! $this->reader->XML($input, $config['encoding'], $config['options'])) {
-                throw new EssenceException('Could not set the XML input string for parsing');
+            if ($this->reader->XML($input, $config['encoding'], $config['options'])) {
+                return;
             }
 
-            return;
+            throw new EssenceException('Could not set the XML input string for parsing');
         }
 
         if (is_resource($input)) {

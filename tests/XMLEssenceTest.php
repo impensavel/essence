@@ -22,15 +22,20 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * Test input file to PASS (readability)
      *
      * @access  public
-     * @return  string
+     * @return  array
      */
-    public function testInputFilePass()
+    public function testInputFilesPass()
     {
-        $file = __DIR__.'/input/xml/person.xml';
+        $files = array(
+            __DIR__.'/input/xml/valid.xml',
+            __DIR__.'/input/xml/invalid.xml',
+        );
 
-        $this->assertTrue(is_readable($file));
+        foreach ($files as $file) {
+            $this->assertTrue(is_readable($file));
+        }
 
-        return $file;
+        return $files;
     }
 
     /**
@@ -127,7 +132,11 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
                     'surname' => 'string(Surname)',
                     'email'   => 'string(Email)',
                 ),
-                'callback' => function () {
+                'callback' => function ($data) {
+                    $this->assertArrayHasKey('properties', $data);
+                    $this->assertArrayHasKey('extra', $data);
+                    $this->assertArrayHasKey('element', $data);
+
                     // simulate a last inserted id
                     return rand(1, 100);
                 },
@@ -139,7 +148,11 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
                     'address'   => 'string(Name)',
                     'postcode'  => 'string(Postcode)',
                 ),
-                'callback' => function () {},
+                'callback' => function ($data) {
+                    $this->assertArrayHasKey('properties', $data);
+                    $this->assertArrayHasKey('extra', $data);
+                    $this->assertArrayHasKey('element', $data);
+                },
             ),
         ));
 
@@ -186,16 +199,16 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * Test string extract() method to PASS
      *
      * @depends testInstantiationPass
-     * @depends testInputFilePass
+     * @depends testInputFilesPass
      *
      * @access  public
      * @param   XMLEssence $essence
-     * @param   string     $file
+     * @param   array      $files
      * @return  void
      */
-    public function testExtractStringPass(XMLEssence $essence, $file)
+    public function testExtractStringPass(XMLEssence $essence, array $files)
     {
-        $input = file_get_contents($file);
+        $input = file_get_contents(current($files));
 
         $result = $essence->extract($input);
 
@@ -206,16 +219,16 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * Test SplFileInfo extract() method to PASS
      *
      * @depends testInstantiationPass
-     * @depends testInputFilePass
+     * @depends testInputFilesPass
      *
      * @access  public
      * @param   XMLEssence $essence
-     * @param   string     $file
+     * @param   array      $files
      * @return  void
      */
-    public function testExtractSplFileInfoPass(XMLEssence $essence, $file)
+    public function testExtractSplFileInfoPass(XMLEssence $essence, array $files)
     {
-        $input = new SplFileInfo($file);
+        $input = new SplFileInfo(current($files));
 
         $result = $essence->extract($input);
 
@@ -226,16 +239,16 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * Test Resource extract() method to PASS
      *
      * @depends testInstantiationPass
-     * @depends testInputFilePass
+     * @depends testInputFilesPass
      *
      * @access  public
      * @param   XMLEssence $essence
-     * @param   string     $file
+     * @param   array      $files
      * @return  void
      */
-    public function testExtractResourcePass(XMLEssence $essence, $file)
+    public function testExtractResourcePass(XMLEssence $essence, array $files)
     {
-        $input = fopen($file, 'r');
+        $input = fopen(current($files), 'r');
 
         $result = $essence->extract($input);
 
@@ -256,6 +269,26 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
     public function testExtractResourceFailInvalidType(XMLEssence $essence)
     {
         $input = socket_create(AF_UNIX, SOCK_STREAM, 0);
+
+        $essence->extract($input);
+    }
+
+    /**
+     * Test extract() method to FAIL (invalid XML)
+     *
+     * @depends                  testInstantiationPass
+     * @depends                  testInputFilesPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage xmlParseEntityRef: no name @ line #9 [Persons/Person]
+     *
+     * @access  public
+     * @param   XMLEssence $essence
+     * @param   array      $files
+     * @return  void
+     */
+    public function testExtractFailInvalidXML(XMLEssence $essence, array $files)
+    {
+        $input = new SplFileInfo(end($files));
 
         $essence->extract($input);
     }

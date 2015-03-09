@@ -121,7 +121,11 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
                 'name'    => 0,
                 'surname' => 1,
             ),
-            'callback' => function () {},
+            'callback' => function ($data) {
+                $this->assertArrayHasKey('properties', $data);
+                $this->assertArrayHasKey('extra', $data);
+                $this->assertArrayHasKey('line', $data);
+            },
         ));
 
         $this->assertInstanceOf('\Impensavel\Essence\CSVEssence', $essence);

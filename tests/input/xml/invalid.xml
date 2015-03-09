@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Persons>
+    <Person>
+        <Name>David</Name>
+        <Surname>Douglas</Surname>
+        <Email>douglas.d@example.com</Email>
+        <Addresses>
+            <Address Type="Home">
+                <Name>Black & White Corner</Name>
+                <Postcode>7281</Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+</Persons>

@@ -139,7 +139,7 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
                     'address'   => 'string(Name)',
                     'postcode'  => 'string(Postcode)',
                 ),
-                'callback' => function ($data) {},
+                'callback' => function () {},
             ),
         ));
 

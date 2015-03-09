@@ -1,27 +1,58 @@
 # XMLEssence
 This class allows us to extract data in the [XML](http://en.wikipedia.org/wiki/XML) format.
 
-## Basic usage
-An example of how to use the class is provided in this document, along with an explanation of available options.
-
 ### Example XML data
-The following data will be used for all the basic examples below.
+The following data will be used for all the basic and advanced examples.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Persons>
     <Person>
-        <Name>John</Name>
-        <Surname>Doe</Surname>
-        <Email>john@doe.com</Email>
+        <Name>Anna</Name>
+        <Surname>Adams</Surname>
+        <Email>anna.adams@example.com</Email>
+        <Addresses>
+            <Address Type="Home">
+                <Name>Rocky Row</Name>
+                <Postcode>6181</Postcode>
+            </Address>
+            <Address Type="Work">
+                <Name>Round Valley</Name>
+                <Postcode>6781</Postcode>
+            </Address>
+        </Addresses>
     </Person>
     <Person>
-        <Name>Jane</Name>
-        <Surname>Doe</Surname>
-        <Email>jane@doe.com</Email>
+        <Name>Bob</Name>
+        <Surname>Brown</Surname>
+        <Email>bob.brown@example.com</Email>
+        <Addresses>
+            <Address Type="Home">
+                <Name>Stony Boulevard</Name>
+                <Postcode>8276</Postcode>
+            </Address>
+        </Addresses>
+    </Person>
+    <Person>
+        <Name>Charles</Name>
+        <Surname>Cooper</Surname>
+        <Email>N/A</Email>
+        <Addresses>
+            <Address Type="Home">
+                <Name>Lazy Fawn Mount</Name>
+                <Postcode>9828</Postcode>
+            </Address>
+            <Address Type="Work">
+                <Name>High Zephyr Impasse</Name>
+                <Postcode>8918</Postcode>
+            </Address>
+        </Addresses>
     </Person>
 </Persons>
 ```
+
+## Basic usage
+Examples of how to use the class are provided in this document, along with an explanation of available options.
 
 ### Elements
 In order to extract data and given the more complex nature of the XML format, **at least** one map/callback pair is required.
@@ -87,19 +118,7 @@ Currently supported are `string`, `resource` (normally a result of a `fopen()`) 
 ### String
 ```php
 $input = <<< EOT
-<?xml version="1.0" encoding="UTF-8"?>
-<Persons>
-    <Person>
-        <Name>John</Name>
-        <Surname>Doe</Surname>
-        <Email>john@doe.com</Email>
-    </Person>
-    <Person>
-        <Name>Jane</Name>
-        <Surname>Doe</Surname>
-        <Email>jane@doe.com</Email>
-    </Person>
-</Persons>
+    <!-- Replace this comment with the example XML data above -->
 EOT;
 
 $essence->extract($input);
@@ -168,48 +187,6 @@ $essence->extract($input, array(), $extra);
 ## Advanced usage
 In this section we will cover two advanced use cases.
 
-### Example XML data
-The following data will be used for all the advanced examples below.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<Persons>
-    <Person>
-        <Name>John</Name>
-        <Surname>Doe</Surname>
-        <Email>john@doe.com</Email>
-        <Addresses>
-            <Address>
-                <Name>Foo Street</Name>
-                <Postcode>A12-3BC</Postcode>
-            </Address>
-        </Addresses>
-    </Person>
-    <Person>
-        <Name>Jane</Name>
-        <Surname>Doe</Surname>
-        <Email>jane@doe.com</Email>
-        <Addresses>
-            <Address>
-                <Name>Bar Street</Name>
-                <Postcode>X89-0YZ</Postcode>
-            </Address>
-        </Addresses>
-    </Person>
-    <Person>
-        <Name>Bob</Name>
-        <Surname></Surname>
-        <Email></Email>
-        <Addresses>
-            <Address>
-                <Name>Baz Street</Name>
-                <Postcode></Postcode>
-            </Address>
-        </Addresses>
-    </Person>
-</Persons>
-```
-
 ### Node/element skipping
 Sometimes we need to skip to a specific element if a pre-condition fails.
 A reason for this would be that there's no point in storing data from a child node is we didn't save the parent's data.
@@ -236,6 +213,7 @@ $config = array(
     ),
     '/Persons/Person/Addresses/Address' => array(
         'map'      => array(
+            'type'     => 'string(@Type)',
             'address'  => 'string(Name)',
             'postcode' => 'string(Postcode)',
         ),
@@ -272,6 +250,7 @@ $config = array(
             // use the last inserted Person id set from 
             // the other callback to make the relation
             'person_id' => '#/Persons/Person',
+            'type'      => 'string(@Type)',
             'address'   => 'string(Name)',
             'postcode'  => 'string(Postcode)',
         ),
@@ -290,3 +269,35 @@ Previous values will be overwritten each time the callback is executed.
 On map properties, by passing `#<element XPath>` instead of an XPath expression, the stored value registered to that element XPath will be used instead.
 
 An `EssenceException` will be thrown if the XPath is not registered.
+
+## XPath
+In order to extract data from an XML, we use XPaths to map the document structure by element and by properties.
+
+### Version
+Only XPath 1.0 is supported.
+
+### Element configuration
+Configuration keys should always have the *absolute* XPath to the element we want to extract data from.
+To extract data from `Person` elements, the configuration should be:
+```php
+$config = array(
+    '/Persons/Person' => array(),
+);
+```
+
+### Map values
+Except when we want to retrieve stored element data, map values should always be XPath expressions *relative* to the current element.
+To get the `Name` property of a `/Persons/Person` element, the configuration should be:
+```php
+$config = array(
+    '/Persons/Person' => array(
+        'name' => 'string(Name)',
+    ),
+);
+```
+
+We should always cast values when mapping element properties, unless there's a special reason to work with a `DOMNodeList`, instead.
+
+### Documentation
+- [Edankert](http://www.edankert.com/xpathfunctions.html)
+- [W3Schools](http://www.w3schools.com/xpath/)

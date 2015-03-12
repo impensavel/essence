@@ -52,7 +52,7 @@ try {
     
     $essence->extract(new SplFileInfo('input.csv'));
 
-} catch(EssenceException $e) {
+} catch (EssenceException $e) {
     // handle exceptions
 }
 ```
@@ -152,7 +152,7 @@ $essence->extract($input, array(), $extra);
 ### CSV files exported from Micro$oft Excel fail to extract
 This is a [known issue](http://superuser.com/questions/349882/how-to-avoid-double-quotes-when-saving-excel-file-as-unicode) and happens when the CSV file is exported with the Unicode format.
 
-Use the following **sed** one liner to fix the file before trying to extract from it:
+On a UNIX environment, use the following [**sed**](http://en.wikipedia.org/wiki/Sed) one liner to fix the file before trying to extract from it:
 ```bash
 sed 's/.$//; s/^.//; s/""/"/g' input.csv > fixed_input.csv
 ```

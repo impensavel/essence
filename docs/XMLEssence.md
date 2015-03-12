@@ -103,10 +103,10 @@ $config = array(
 try
 {
     $essence = new XMLEssence($config);
-    
+
     $essence->extract(new SplFileInfo('input.xml'));
 
-} catch(EssenceException $e) {
+} catch (EssenceException $e) {
     // handle exceptions
 }
 ```
@@ -118,7 +118,10 @@ Currently supported are `string`, `resource` (normally a result of a `fopen()`) 
 ### String
 ```php
 $input = <<< EOT
-    <!-- Replace this comment with the example XML data above -->
+    <?xml version="1.0" encoding="UTF-8"?>
+    <Persons>
+        <!-- data -->
+    </Persons>
 EOT;
 
 $essence->extract($input);
@@ -189,7 +192,7 @@ In this section we will cover two advanced use cases.
 
 ### Node/element skipping
 Sometimes we need to skip to a specific element if a pre-condition fails.
-A reason for this would be that there's no point in storing data from a child node is we didn't save the parent's data.
+A reason for this would be that there's no point in storing data from a child node if we didn't save the parent's data.
 
 On the XML above, the third `Person` element has some missing data and we only want to extract valid/complete data from the set.
 
@@ -226,8 +229,8 @@ $config = array(
 ```
 In other words, the *absolute* XPath of the element we want to skip to, must be returned from the callback we're in.
 
-### Storing and retrieving element data
-In order to keep track of relations between callbacks, we can store data from one and retrieve it from another.
+### Storing and retrieving data
+In order to keep track of node/element relations, we can store data from one callback and retrieve it from another.
 
 ```php
 $config = array(
@@ -264,9 +267,9 @@ $config = array(
 ```
 
 When a callback returns, any value than cannot be mapped to an *absolute* XPath (otherwise we would do a skip), will be stored.
-Previous values will be overwritten each time the callback is executed.
+Previous values will be overwritten each time the callback returns.
 
-On map properties, by passing `#<element XPath>` instead of an XPath expression, the stored value registered to that element XPath will be used instead.
+On the map properties, by passing `#<element XPath>` instead of an XPath expression, the stored value registered to that element XPath will be used instead.
 
 An `EssenceException` will be thrown if the XPath is not registered.
 
@@ -286,7 +289,7 @@ $config = array(
 ```
 
 ### Map values
-Except when we want to retrieve stored element data, map values should always be XPath expressions *relative* to the current element.
+Map values should always be XPath expressions *relative* to the current element, unless when we want to retrieve stored element data.
 To get the `Name` property of a `/Persons/Person` element, the configuration should be:
 ```php
 $config = array(
@@ -296,7 +299,7 @@ $config = array(
 );
 ```
 
-We should always cast values when mapping element properties, unless there's a special reason to work with a `DOMNodeList`, instead.
+We should always cast the values when mapping element properties, unless there's a special reason to work with a `DOMNodeList` object, instead.
 
 ### Documentation
 - [Edankert](http://www.edankert.com/xpathfunctions.html)

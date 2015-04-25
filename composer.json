@@ -1,13 +1,14 @@
 {
     "name": "impensavel/essence",
     "type": "library",
-    "description": "A PHP library to simplify data extraction from CSV and XML sources.",
+    "description": "A PHP library to simplify data extraction from CSV and XML/WebService/SOAP sources.",
     "keywords": [
         "essence",
         "data",
         "extraction",
         "csv",
-        "xml"
+        "xml",
+        "soap"
     ],
     "homepage": "https://github.com/impensavel/essence",
     "license": "MIT",

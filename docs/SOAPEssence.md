@@ -71,7 +71,7 @@ $essence->extract($input);
 ```
 
 ## Options
-The options supported by the `extract()` method are the same as the ones in the [XML Essence](XMLEssence.md) class. To know more about it, refer to the [documentation](XMLEssence.md#option-1).
+The options supported by the `extract()` method are the same as the ones in the [XML Essence](XMLEssence.md) class. To know more about it, refer to the [documentation](XMLEssence.md#options).
 
 ## Extra
 Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 

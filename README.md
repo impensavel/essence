@@ -2,7 +2,7 @@
 [![Latest Stable Version](https://poser.pugx.org/impensavel/essence/v/stable.svg)](https://packagist.org/packages/impensavel/essence)
 [![Build Status](https://travis-ci.org/impensavel/essence.svg?branch=master)](https://travis-ci.org/impensavel/essence)
 
-A PHP library to simplify data extraction from CSV and XML sources.
+A PHP library to simplify data extraction from CSV and XML/WebService/SOAP sources.
 
 This library aims for [PSR-1][], [PSR-2][] and [PSR-4][] standards compliance.
 
@@ -20,6 +20,7 @@ composer require "impensavel/essence:~1.0"
 
 ## Class documentation
 - [CSVEssence](docs/CSVEssence.md)
+- [SOAPEssence](docs/SOAPEssence.md)
 - [XMLEssence](docs/XMLEssence.md)
 
 ## License

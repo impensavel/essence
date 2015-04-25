@@ -258,11 +258,12 @@ class XMLEssence extends AbstractEssence
      */
     public function extract($input, array $config = array(), $extra = null)
     {
-        $config = array_merge(array(
-            'encoding'   => 'UTF-8',
-            'options'    => LIBXML_PARSEHUGE,
+        $config = array_replace_recursive(array(
+            'encoding' => 'UTF-8',
+            'options'  => LIBXML_PARSEHUGE,
+        ), $config, array(
             'namespaces' => array(),
-        ), $config);
+        ));
 
         $this->provision($input, $config);
 

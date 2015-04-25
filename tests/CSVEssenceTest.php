@@ -40,20 +40,6 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to FAIL (map empty/not set)
-     *
-     * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage [default] Element map empty/not set
-     *
-     * @access  public
-     * @return  void
-     */
-    public function testInstantiationFailMapEmptyNotSet()
-    {
-        new CSVEssence(array());
-    }
-
-    /**
      * Test instantiation to FAIL (map must be an array)
      *
      * @expectedException        \Impensavel\Essence\EssenceException

@@ -37,10 +37,6 @@ abstract class AbstractEssence implements EssenceInterface
      */
     public function register(array $element, $key = 'default')
     {
-        if (empty($element['map'])) {
-            throw new EssenceException('['.$key.'] Element map empty/not set');
-        }
-
         if (! is_array($element['map'])) {
             throw new EssenceException('['.$key.'] Element map must be an array');
         }

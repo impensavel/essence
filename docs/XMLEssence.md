@@ -84,8 +84,8 @@ array(
 
 require 'vendor/autoload.php';
 
-use Impensavel\Essence\XMLEssence;
 use Impensavel\Essence\EssenceException;
+use Impensavel\Essence\XMLEssence;
 
 $config = array(
     '/Persons/Person' => array(

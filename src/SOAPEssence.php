@@ -69,7 +69,7 @@ class SOAPEssence extends XMLEssence
         ));
 
         try {
-            $this->client = new SoapClient($wsdl, $options);
+            $this->client = @new SoapClient($wsdl, $options);
         } catch (SoapFault $e) {
             throw new EssenceException('SOAP client could not be instantiated', 0, $e);
         }

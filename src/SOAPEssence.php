@@ -26,15 +26,15 @@ class SOAPEssence extends XMLEssence
     private $client;
 
     /**
-     * Last SOAP request data
+     * Last SOAP request
      *
      * @access  private
-     * @var     array
+     * @var     string
      */
-    private $lastRequest = array();
+    private $lastRequest;
 
     /**
-     * Last response
+     * Last SOAP response
      *
      * @access  private
      * @var     string
@@ -42,26 +42,34 @@ class SOAPEssence extends XMLEssence
     private $lastResponse;
 
     /**
+     * Last SOAP response headers
+     *
+     * @access  private
+     * @var     array
+     */
+    private $lastResponseHeaders = array();
+
+    /**
      * SOAPEssence constructor
      *
      * @access  public
      * @param   array  $elements Elements
      * @param   string $wsdl     WSDL file URI
-     * @param   array  $config   SOAP client configuration
+     * @param   array  $options  SOAP client options
      * @throws  EssenceException
      * @return  SOAPEssence
      */
-    public function __construct(array $elements, $wsdl = null, array $config = array())
+    public function __construct(array $elements, $wsdl = null, array $options = array())
     {
         parent::__construct($elements);
 
-        $config = array_merge($config, array(
+        $options = array_merge($options, array(
             'exceptions' => true,
             'trace'      => true,
         ));
 
         try {
-            $this->client = new SoapClient($wsdl, $config);
+            $this->client = new SoapClient($wsdl, $options);
         } catch (SoapFault $e) {
             throw new EssenceException('SOAP client could not be instantiated', 0, $e);
         }
@@ -90,6 +98,17 @@ class SOAPEssence extends XMLEssence
     }
 
     /**
+     * Return the last SOAP response headers
+     *
+     * @access  public
+     * @return  array
+     */
+    public function lastResponseHeaders()
+    {
+        return $this->lastResponseHeaders;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function extract($input, array $config = array(), $extra = null)
@@ -101,6 +120,8 @@ class SOAPEssence extends XMLEssence
         $input = array_replace_recursive(array(
             'function'  => null,
             'arguments' => array(),
+            'options'   => array(),
+            'headers'   => array(),
         ), $input);
 
         if (empty($input['function'])) {
@@ -108,7 +129,13 @@ class SOAPEssence extends XMLEssence
         }
 
         try {
-            $this->client->__soapCall($input['function'], array($input['arguments']));
+            $this->client->__soapCall(
+                $input['function'],
+                array($input['arguments']),
+                $input['options'],
+                $input['headers'],
+                $this->lastResponseHeaders
+            );
 
             $this->lastRequest = $this->client->__getLastRequest();
             $this->lastResponse = $this->client->__getLastResponse();

@@ -118,11 +118,12 @@ class SOAPEssence extends XMLEssence
         }
 
         $input = array_replace_recursive(array(
-            'function'  => null,
+            'function' => null,
+        ), $input, array(
             'arguments' => array(),
             'options'   => array(),
             'headers'   => array(),
-        ), $input);
+        ));
 
         if (empty($input['function'])) {
             throw new EssenceException('The SOAP function is not set');

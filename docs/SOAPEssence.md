@@ -1,5 +1,5 @@
 # SOAPEssence
-This class extends the [XMLEssence](XMLEssence.md) in order to extract data from [WebService](http://en.wikipedia.org/wiki/Web_service)/[SOAP](http://en.wikipedia.org/wiki/SOAP) sources.
+This class inherits from the [XMLEssence](XMLEssence.md) class, making it easier to extract data from [WebService](http://en.wikipedia.org/wiki/Web_service)/[SOAP](http://en.wikipedia.org/wiki/SOAP) sources.
 
 
 ## Usage
@@ -25,13 +25,17 @@ $elements = array(
     ),
 );
 
+// Web Service Definition Language
+$wsdl = 'http://www.webservicex.net/CurrencyConvertor.asmx?WSDL';
+
+// SOAP client options
 $options = array(
-    // SOAP client options
+    'soap_version' => SOAP_1_2,
 );
 
 try
 {
-    $essence = new SOAPEssence($elements, 'http://www.webservicex.net/CurrencyConvertor.asmx?WSDL', $options);
+    $essence = new SOAPEssence($elements, $wsdl, $options);
 
     $input = array(
         'function'  => 'ConversionRate',
@@ -52,7 +56,7 @@ try
 }
 ```
 
-To see what options the SOAP client accepts, refer to the [documentation](http://php.net/manual/en/soapclient.soapclient.php).
+To see what arguments the SOAP client accepts, refer to the [documentation](http://php.net/manual/en/soapclient.soapclient.php).
 
 The [webservicex.net](http://www.webservicex.net) website provides access to dozens of web services. The above code is an implementation to one of them.
 
@@ -71,7 +75,7 @@ $essence->extract($input);
 ```
 
 ## Options
-The options supported by the `extract()` method are the same as the ones in the [XML Essence](XMLEssence.md) class. To know more about it, refer to the [documentation](XMLEssence.md#options).
+The options supported by the `extract()` method are the same as the ones in the [XML Essence](XMLEssence.md) class. To know more about them, refer to the [documentation](XMLEssence.md#options).
 
 ## Extra
 Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
@@ -84,7 +88,7 @@ $essence->extract($input, array(), $extra);
 ```
 
 ## Debugging
-Sometimes using WebService/SOAP can be a bit tricky, so having a bit more information of what's going on is always helpful.
+Using SOAP/WebServices can be tricky, so it's always helpful to have a bit more of information on what's going on.
 
 ### Last request
 Each time the `extract()` method is executed, a SOAP request is made. To retrieve the SOAP envelope used for the request, use the `lastRequest()` method.

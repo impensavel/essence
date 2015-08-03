@@ -19,9 +19,9 @@ composer require "impensavel/essence:~1.0"
 ```
 
 ## Class documentation
-- [CSVEssence](docs/CSVEssence.md)
-- [SOAPEssence](docs/SOAPEssence.md)
-- [XMLEssence](docs/XMLEssence.md)
+- [CSV Essence](docs/CSVEssence.md)
+- [SOAP Essence](docs/SOAPEssence.md)
+- [XML Essence](docs/XMLEssence.md)
 
 ## License
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

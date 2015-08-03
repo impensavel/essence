@@ -1,6 +1,5 @@
-# SOAPEssence
+# SOAP Essence
 This class inherits from the [XMLEssence](XMLEssence.md) class, making it easier to extract data from [WebService](http://en.wikipedia.org/wiki/Web_service)/[SOAP](http://en.wikipedia.org/wiki/SOAP) sources.
-
 
 ## Usage
 Examples of how to use the class are provided in this document, along with an explanation of available options.
@@ -130,7 +129,7 @@ Example output:
 </soap:Envelope>
 ```
 
-This method is pacticularly useful when the element mapping hasn't been done yet and we need to see the document structure we're extracting data from.
+This method is particularly useful when the element mapping hasn't been done yet and we need to see the document structure we're extracting data from.
 
 ### Last response headers
 Sometimes we may also need to check the response headers. The `lastResponseHeaders()` method will return an array with all the headers included in the response.

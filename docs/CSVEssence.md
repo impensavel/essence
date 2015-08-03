@@ -1,5 +1,5 @@
-# CSVEssence
-This class allows us to extract tabular data in the [CSV](http://en.wikipedia.org/wiki/Comma-separated_values) format.
+# CSV Essence
+Extract tabular data from a [CSV](http://en.wikipedia.org/wiki/Comma-separated_values) source.
 
 ## Usage
 An example of how to use the class is provided in this document, along with an explanation of available options.

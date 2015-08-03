@@ -1,5 +1,5 @@
-# XMLEssence
-This class allows us to extract data in the [XML](http://en.wikipedia.org/wiki/XML) format.
+# XML Essence
+Extract data from an [XML](http://en.wikipedia.org/wiki/XML) source.
 
 ### Example XML data
 The following data will be used for all the basic and advanced examples.

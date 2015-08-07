@@ -82,11 +82,12 @@ class XMLEssence extends AbstractEssence
      * XMLEssence constructor
      *
      * @access  public
-     * @param   array  $elements Elements
+     * @param   array  $elements   Elements
+     * @param   array  $namespaces Namespaces
      * @throws  EssenceException
      * @return  XMLEssence
      */
-    public function __construct(array $elements)
+    public function __construct(array $elements, array $namespaces = array())
     {
         foreach ($elements as $key => $element) {
             $this->register($element, trim($key, '/'));
@@ -95,6 +96,11 @@ class XMLEssence extends AbstractEssence
         $this->reader = new XMLReader();
         $this->doc = new DOMDocument();
         $this->element = new DOMXPath($this->doc);
+
+        // register namespaces
+        foreach ($namespaces as $prefix => $uri) {
+            $this->element->registerNamespace($prefix, $uri);
+        }
 
         // manually handle libXML errors
         libxml_use_internal_errors(true);
@@ -261,16 +267,9 @@ class XMLEssence extends AbstractEssence
         $config = array_replace_recursive(array(
             'encoding' => 'UTF-8',
             'options'  => LIBXML_PARSEHUGE,
-        ), $config, array(
-            'namespaces' => array(),
-        ));
+        ), $config);
 
         $this->provision($input, $config);
-
-        // namespace registration
-        foreach ($config['namespaces'] as $prefix => $uri) {
-            $this->element->registerNamespace($prefix, $uri);
-        }
 
         while ($this->nextElement()) {
             if (! $this->reader->isEmptyElement && $this->reader->nodeType === XMLReader::ELEMENT && $this->isMapped($this->current)) {

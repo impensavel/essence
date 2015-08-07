@@ -53,15 +53,16 @@ class SOAPEssence extends XMLEssence
      * SOAPEssence constructor
      *
      * @access  public
-     * @param   array  $elements Elements
-     * @param   string $wsdl     WSDL file URI
-     * @param   array  $options  SOAP client options
+     * @param   array  $elements   Elements
+     * @param   string $wsdl       WSDL file URI
+     * @param   array  $namespaces Namespaces
+     * @param   array  $options    SOAP client options
      * @throws  EssenceException
      * @return  SOAPEssence
      */
-    public function __construct(array $elements, $wsdl = null, array $options = array())
+    public function __construct(array $elements, $wsdl = null, array $namespaces = array(), array $options = array())
     {
-        parent::__construct($elements);
+        parent::__construct($elements, $namespaces);
 
         $options = array_merge($options, array(
             'exceptions' => true,

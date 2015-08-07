@@ -49,6 +49,8 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
                 'callback' => function () {},
             ),
         ), null, array(
+            'ns' => 'http://foo.bar/baz'
+        ), array(
             'uri'      => 'foo',
             'location' => 'bar',
         ));

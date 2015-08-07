@@ -17,7 +17,7 @@ use Closure;
 abstract class AbstractEssence implements EssenceInterface
 {
     /**
-     * Element maps
+     * Element map registry
      *
      * @access  protected
      * @var     array

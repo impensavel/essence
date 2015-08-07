@@ -28,7 +28,7 @@ $elements = array(
 $wsdl = 'http://www.webservicex.net/CurrencyConvertor.asmx?WSDL';
 
 // XML namespace
-$namespaces => array(
+$namespaces = array(
     'ns' => 'http://www.webserviceX.NET/',
 );
 

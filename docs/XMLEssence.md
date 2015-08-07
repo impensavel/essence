@@ -81,7 +81,7 @@ array(
 ### Namespaces
 For some XML documents, a namespace needs to be registered in order to parse the data properly.
 ```php
-$namespaces => array(
+$namespaces = array(
     'atom' => 'http://www.w3.org/2005/Atom',
 );
 ```

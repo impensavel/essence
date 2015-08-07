@@ -78,6 +78,14 @@ array(
 );
 ```
 
+### Namespaces
+For some XML documents, a namespace needs to be registered in order to parse the data properly.
+```php
+$namespaces => array(
+    'atom' => 'http://www.w3.org/2005/Atom',
+);
+```
+
 ### Implementation
 ```php
 <?php
@@ -100,9 +108,11 @@ $config = array(
     ),
 );
 
+$namespaces = array();
+
 try
 {
-    $essence = new XMLEssence($config);
+    $essence = new XMLEssence($config, $namespaces);
 
     $essence->extract(new SplFileInfo('input.xml'));
 
@@ -165,17 +175,6 @@ $essence->extract($input, array(
 ```
 
 Refer to the [documentation](http://php.net/manual/en/libxml.constants.php) for the complete list of supported `LIBXML_*` constants.
-
-### namespaces
-For some XML documents, we might need to register a namespace in order to parse the data properly.
-
-```php
-$essence->extract($input, array(
-    'namespaces' => array(
-        'atom' => 'http://www.w3.org/2005/Atom',
-    ),
-));
-```
 
 ## Extra
 Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 

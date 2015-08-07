@@ -27,6 +27,11 @@ $elements = array(
 // Web Service Definition Language
 $wsdl = 'http://www.webservicex.net/CurrencyConvertor.asmx?WSDL';
 
+// XML namespace
+$namespaces => array(
+    'ns' => 'http://www.webserviceX.NET/',
+);
+
 // SOAP client options
 $options = array(
     'soap_version' => SOAP_1_2,
@@ -34,7 +39,7 @@ $options = array(
 
 try
 {
-    $essence = new SOAPEssence($elements, $wsdl, $options);
+    $essence = new SOAPEssence($elements, $wsdl, $namespaces, $options);
 
     $input = array(
         'function'  => 'ConversionRate',
@@ -44,11 +49,7 @@ try
         ),
     );
 
-    $essence->extract($input, array(
-        'namespaces' => array(
-            'ns' => 'http://www.webserviceX.NET/',
-        ),
-    ));
+    $essence->extract($input);
 
 } catch (EssenceException $e) {
     // handle exceptions

@@ -31,9 +31,9 @@ interface EssenceInterface
      * @access  public
      * @param   mixed  $input  Input data
      * @param   array  $config Configuration settings (optional)
-     * @param   mixed  $extra  Extra callback data (optional)
+     * @param   mixed  $data   User data (optional)
      * @throws  EssenceException
      * @return  bool
      */
-    public function extract($input, array $config = array(), $extra = null);
+    public function extract($input, array $config = array(), &$data = null);
 }

@@ -46,7 +46,7 @@ abstract class AbstractEssence implements EssenceInterface
         }
 
         if (! $element['handler'] instanceof Closure) {
-            throw new EssenceException('['.$key.'] Element data handler must a Closure');
+            throw new EssenceException('['.$key.'] Element data handler must be a Closure');
         }
 
         $this->maps[$key] = $element['map'];

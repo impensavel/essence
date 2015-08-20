@@ -39,10 +39,10 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to FAIL (map must be an array)
+     * Test instantiation to FAIL (property map must be an array)
      *
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage [Persons/Person] Element map must be an array
+     * @expectedExceptionMessage [Persons/Person] Element property map must be an array
      *
      * @access  public
      * @return  void
@@ -57,15 +57,15 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to FAIL (callback not set)
+     * Test instantiation to FAIL (Data handler not set)
      *
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage [Persons/Person] Element callback must be set
+     * @expectedExceptionMessage [Persons/Person] Element data handler is not set
      *
      * @access  public
      * @return  void
      */
-    public function testInstantiationFailCallbackNotSet()
+    public function testInstantiationFailDataHandlerNotSet()
     {
         new XMLEssence(array(
             '/Persons/Person' => array(
@@ -79,24 +79,24 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to FAIL (invalid callback)
+     * Test instantiation to FAIL (invalid Data handler)
      *
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage [Persons/Person] Element callback must a Closure
+     * @expectedExceptionMessage [Persons/Person] Element data handler must be a Closure
      *
      * @access  public
      * @return  void
      */
-    public function testInstantiationFailInvalidCallback()
+    public function testInstantiationFailInvalidDataHandler()
     {
         new XMLEssence(array(
             '/Persons/Person' => array(
-                'map'      => array(
+                'map'     => array(
                     'name'    => 'string(Name)',
                     'surname' => 'string(Surname)',
                     'email'   => 'string(Email)',
                 ),
-                'callback' => true,
+                'handler' => true,
             ),
         ));
     }
@@ -111,24 +111,27 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
     {
         $essence = new XMLEssence(array(
             '/Persons/Person' => array(
-                'map'      => array(
+                'map'     => array(
                     'name'    => 'string(Name)',
                     'surname' => 'string(Surname)',
                     'email'   => 'string(Email)',
                 ),
-                'callback' => function () {
+                'handler' => function () {
                     // simulate a last inserted id
                     return rand(1, 100);
                 },
             ),
             '/Persons/Person/Addresses/Address' => array(
-                'map'      => array(
+                'map'     => array(
                     'person_id' => '#/Persons/Person',
                     'type'      => 'string(@Type)',
                     'address'   => 'string(Name)',
                     'postcode'  => 'string(Postcode)',
                 ),
-                'callback' => function () {},
+                'handler' => function ()
+                {
+                    // ...
+                },
             ),
         ));
 

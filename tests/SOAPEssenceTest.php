@@ -29,8 +29,11 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
     {
         new SOAPEssence(array(
             '/Foo/Bar' => array(
-                'map'      => array(),
-                'callback' => function () {},
+                'map'     => array(),
+                'handler' => function ($element, array $properties, &$data)
+                {
+                    // ...
+                },
             ),
         ));
     }
@@ -45,8 +48,11 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
     {
         $essence = new SOAPEssence(array(
             '/Foo/Bar' => array(
-                'map'      => array(),
-                'callback' => function () {},
+                'map'     => array(),
+                'handler' => function ($element, array $properties, &$data)
+                {
+                    // ...
+                },
             ),
         ), null, array(
             'ns' => 'http://foo.bar/baz'

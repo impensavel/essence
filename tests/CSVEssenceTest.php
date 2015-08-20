@@ -40,10 +40,10 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to FAIL (map must be an array)
+     * Test instantiation to FAIL (property map must be an array)
      *
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage [default] Element map must be an array
+     * @expectedExceptionMessage [default] Element property map must be an array
      *
      * @access  public
      * @return  void
@@ -56,15 +56,15 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to FAIL (callback not set)
+     * Test instantiation to FAIL (Data handler not set)
      *
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage [default] Element callback must be set
+     * @expectedExceptionMessage [default] Element data handler is not set
      *
      * @access  public
      * @return  void
      */
-    public function testInstantiationFailCallbackNotSet()
+    public function testInstantiationFailDataHandlerNotSet()
     {
         new CSVEssence(array(
             'map' => array(
@@ -75,22 +75,22 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to FAIL (invalid callback)
+     * Test instantiation to FAIL (invalid Data handler)
      *
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage [default] Element callback must a Closure
+     * @expectedExceptionMessage [default] Element data handler must be a Closure
      *
      * @access  public
      * @return  void
      */
-    public function testInstantiationFailInvalidCallback()
+    public function testInstantiationFailInvalidDataHandler()
     {
         new CSVEssence(array(
-            'map'      => array(
+            'map'     => array(
                 'name'    => 0,
                 'surname' => 1,
             ),
-            'callback' => true
+            'handler' => true
         ));
     }
 
@@ -107,7 +107,10 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
                 'name'    => 0,
                 'surname' => 1,
             ),
-            'callback' => function () {},
+            'handler' => function ()
+            {
+                // ...
+            },
         ));
 
         $this->assertInstanceOf('\Impensavel\Essence\CSVEssence', $essence);

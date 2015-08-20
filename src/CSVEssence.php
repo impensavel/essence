@@ -93,7 +93,7 @@ class CSVEssence extends AbstractEssence
     /**
      * {@inheritdoc}
      */
-    public function extract($input, array $config = array(), $extra = null)
+    public function extract($input, array $config = array(), &$data = null)
     {
         $config = array_merge(array(
             'delimiter'  => ',',
@@ -104,25 +104,21 @@ class CSVEssence extends AbstractEssence
             'auto_eol'   => false, // auto detect end of lines
         ), $config);
 
-        $data = $this->provision($input, $config);
+        $elements = $this->provision($input, $config);
 
-        foreach ($data as $line => $element) {
+        foreach ($elements as $line => $element) {
 
             // skip until we reach the starting line
             if ($line < $config['start_line']) {
                 continue;
             }
 
-            // callback argument
-            $argument = array(
-                'properties' => array(),
-                'extra'      => $extra,
-                'line'       => $line,
-            );
+            // current element properties
+            $properties = array();
 
             foreach ($this->maps['default'] as $key => $column) {
                 if (isset($element[$column])) {
-                    $argument['properties'][$key] = $element[$column];
+                    $properties[$key] = $element[$column];
 
                     continue;
                 }
@@ -133,8 +129,14 @@ class CSVEssence extends AbstractEssence
                 }
             }
 
-            // execute callback
-            $this->callbacks['default']($argument);
+            // execute element data handler
+            $arguments = array(
+                $line,
+                $properties,
+                &$data,
+            );
+
+            call_user_func($this->handlers['default'], $arguments);
         }
 
         return true;

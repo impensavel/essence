@@ -262,7 +262,7 @@ class XMLEssence extends AbstractEssence
     /**
      * {@inheritdoc}
      */
-    public function extract($input, array $config = array(), $extra = null)
+    public function extract($input, array $config = array(), &$data = null)
     {
         $config = array_replace_recursive(array(
             'encoding' => 'UTF-8',
@@ -276,12 +276,8 @@ class XMLEssence extends AbstractEssence
 
                 $node = $this->getCurrentNode();
 
-                // callback argument
-                $argument = array(
-                    'properties' => array(),
-                    'extra'      => $extra,
-                    'element'    => '/'.$this->current,
-                );
+                // current element properties
+                $properties = array();
 
                 foreach ($this->maps[$this->current] as $key => $xpath) {
 
@@ -289,20 +285,26 @@ class XMLEssence extends AbstractEssence
 
                     // get registered Element data
                     if (strpos($xpath, '#') === 0) {
-                        $argument['properties'][$key] = $this->getData(substr($xpath, 1));
+                        $properties[$key] = $this->getData(substr($xpath, 1));
 
                     // get evaluated XPath data
                     } else {
-                        $argument['properties'][$key] = $this->element->evaluate($xpath, $node);
+                        $properties[$key] = $this->element->evaluate($xpath, $node);
 
-                        if ($argument['properties'][$key] === false) {
+                        if ($properties[$key] === false) {
                             throw new EssenceException('Invalid XPath expression: "'.$xpath.'"');
                         }
                     }
                 }
 
-                // execute callback
-                $result = $this->callbacks[$this->current]($argument);
+                // execute element data handler
+                $arguments = array(
+                    '/'.$this->current,
+                    $properties,
+                    &$data,
+                );
+
+                $result = call_user_func_array($this->handlers[$this->current], $arguments);
 
                 if ($result) {
                     // skip to Element

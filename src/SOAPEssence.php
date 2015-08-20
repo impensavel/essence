@@ -112,7 +112,7 @@ class SOAPEssence extends XMLEssence
     /**
      * {@inheritdoc}
      */
-    public function extract($input, array $config = array(), $extra = null)
+    public function extract($input, array $config = array(), &$data = null)
     {
         if (! is_array($input)) {
             throw new EssenceException('The input must be an associative array');
@@ -142,7 +142,7 @@ class SOAPEssence extends XMLEssence
             $this->lastRequest = $this->client->__getLastRequest();
             $this->lastResponse = $this->client->__getLastResponse();
 
-            return parent::extract($this->lastResponse, $config, $extra);
+            return parent::extract($this->lastResponse, $config, $data);
 
         } catch (SoapFault $e) {
             throw new EssenceException($e->getMessage(), $e->getCode(), $e);

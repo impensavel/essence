@@ -15,11 +15,12 @@ use Impensavel\Essence\SOAPEssence;
 
 $elements = array(
     '/soap:Envelope/soap:Body/ConversionRateResponse' => array(
-        'map'      => array(
+        'map'     => array(
             'rate' => 'string(ns:ConversionRateResult)',
         ),
-        'callback' => function ($data) {
-            var_dump($data);
+        'handler' => function ($element, array $properties, &$data) 
+        {
+            var_dump($properties);
         },
     ),
 );
@@ -77,15 +78,23 @@ $essence->extract($input);
 ## Options
 The options supported by the `extract()` method are the same as the ones in the [XML Essence](XMLEssence.md) class. To know more about them, refer to the [documentation](XMLEssence.md#options).
 
-## Extra
-Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
-To do that, we can pass it in as the 3rd parameter of the method:
+## User data
+By default, the handler only has access to the data being extracted, but sometimes access to other data might be necessary.
+
+To solve this, the user data can be passed as a **third** argument of the `extract()` method.
 
 ```php
-$extra = Foo::bar();
+$config = array(
+    // extract() method configuration
+);
+$data = array(
+    // user data
+);
 
-$essence->extract($input, array(), $extra);
+$essence->extract($input, $config, $data);
 ```
+
+>**TIP:** The user data is passed by reference, which means that it can be modified by the handler, if needed.
 
 ## Debugging
 Using SOAP/WebServices can be tricky, so it's always helpful to have a bit more of information on what's going on.

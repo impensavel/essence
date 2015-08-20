@@ -1,5 +1,5 @@
 # CSV Essence
-Extract tabular data from a [CSV](http://en.wikipedia.org/wiki/Comma-separated_values) source.
+Extract tabular data from [CSV](http://en.wikipedia.org/wiki/Comma-separated_values) sources.
 
 ## Usage
 An example of how to use the class is provided in this document, along with an explanation of available options.
@@ -17,13 +17,18 @@ In order to extract data, a property map must be defined.
 Given the simple nature of the CSV format, only **one** map is required.
 The map must be an associative `array` with each property name as key and the respective column index as value. 
 
-### Callback
-Besides the map, a callback must also be set. It should be an anonymous function (`Closure`) which accepts an `array` argument with the following structure:
+### Data handler
+Besides the map, a data handler must be set. It should be of the type `Closure`, with the following signature:
+
 ```php
-array(
-    'properties' => array(), // associative array with extracted properties
-    'extra'      => null,    // extra data passed to the extract() method
-    'line'       => 0,       // line number of the current CSV element
+/**
+ * @param int   $element    Line number of the current CSV element
+ * @param array $properties Associative array with extracted properties
+ * @param mixed $data       User data passed by reference
+ */
+$handler = function ($element, array $properties, &$data)
+{
+    // implementation
 );
 ```
 
@@ -37,13 +42,13 @@ use Impensavel\Essence\CSVEssence;
 use Impensavel\Essence\EssenceException;
 
 $config = array(
-    'map'      => array(
+    'map'     => array(
         'name'    => 1, // 2nd column
         'surname' => 2, // 3rd column
         'email'   => 0, // 1st column
     ),
-    'callback' => function ($data) {
-        var_dump($data);
+    'handler' => function ($element, array $properties, &$data) {
+        var_dump($properties);
     },
 );
 
@@ -57,9 +62,8 @@ try {
 }
 ```
 
-
 ## Input types
-The `extract()` method allows us to consume CSV data from a few input types.
+The `extract()` method allows consuming CSV data from a few input types.
 Currently supported are `string`, `resource` (normally a result of a `fopen()`) and `SplFileInfo`.
 
 ### String
@@ -118,10 +122,10 @@ $essence->extract($input, array(
 ```
 
 ### exceptions
-An `EssenceException` is thrown by **default** when we try to extract data from an invalid column index.
+An `EssenceException` is thrown by **default** when extracting data from an invalid column index.
 This might happen because of an invalid map (a wrong column index was set) or bad data (some lines in the CSV have less columns).
 
-If it's the second case, we probably want to continue extracting the data, skipping invalid lines.
+In the second case, it's probably best to continue extracting data only skipping invalid lines.
 ```php
 $essence->extract($input, array(
     'exceptions' => false,
@@ -137,15 +141,23 @@ $essence->extract($input, array(
 ));
 ```
 
-## Extra
-Normally, the only data the callback has access to, is the one being extracted. But sometimes, we might need to have access to other data from within the callback. 
-To do that, we can pass it as the 3rd parameter of the `extract()` method:
+## User data
+By default, the handler only has access to the data being extracted, but sometimes access to other data might be necessary.
+
+To solve this, the user data can be passed as a **third** argument of the `extract()` method.
 
 ```php
-$extra = Foo::bar();
+$config = array(
+    // extract() method configuration
+);
+$data = array(
+    // user data
+);
 
-$essence->extract($input, array(), $extra);
+$essence->extract($input, $config, $data);
 ```
+
+>**TIP:** The user data is passed by reference, which means that it can be modified by the handler, if needed.
 
 ## Troubleshooting
 

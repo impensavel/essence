@@ -17,7 +17,7 @@ use Closure;
 abstract class AbstractEssence implements EssenceInterface
 {
     /**
-     * Element map registry
+     * Element Property Map registry
      *
      * @access  protected
      * @var     array
@@ -25,12 +25,12 @@ abstract class AbstractEssence implements EssenceInterface
     protected $maps = array();
 
     /**
-     * Callback registry
+     * Data Handler registry
      *
      * @access  protected
      * @var     array
      */
-    protected $callbacks = array();
+    protected $handlers = array();
 
     /**
      * {@inheritdoc}
@@ -38,18 +38,18 @@ abstract class AbstractEssence implements EssenceInterface
     public function register(array $element, $key = 'default')
     {
         if (! is_array($element['map'])) {
-            throw new EssenceException('['.$key.'] Element map must be an array');
+            throw new EssenceException('['.$key.'] Element property map must be an array');
         }
 
-        if (! isset($element['callback'])) {
-            throw new EssenceException('['.$key.'] Element callback must be set');
+        if (! isset($element['handler'])) {
+            throw new EssenceException('['.$key.'] Element data handler is not set');
         }
 
-        if (! $element['callback'] instanceof Closure) {
-            throw new EssenceException('['.$key.'] Element callback must a Closure');
+        if (! $element['handler'] instanceof Closure) {
+            throw new EssenceException('['.$key.'] Element data handler must a Closure');
         }
 
         $this->maps[$key] = $element['map'];
-        $this->callbacks[$key] = $element['callback'];
+        $this->handlers[$key] = $element['handler'];
     }
 }

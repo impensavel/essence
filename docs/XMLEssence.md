@@ -57,7 +57,7 @@ Examples of how to use the class are provided in this document, along with an ex
 ### Elements
 In order to extract data and given the more complex nature of the XML format, **at least** one map/data handler pair is required.
 
-Each element configuration should be an associative `array`, with the *absolute* XPath of the element as key and an `array` containing the map/data handler pair as values.
+Each element configuration must be an associative `array`, with the *absolute* XPath of the element as key and an `array` containing the map/data handler pair as value.
 ```php
 '/xpath' => array(
     'map'     => array(
@@ -80,13 +80,14 @@ The data handler should be of the type `Closure` and have the following signatur
 /**
  * @param string $element    Absolute XPath of the current XML element
  * @param array  $properties Associative array with extracted properties
- * @param mixed  $data       User data passed by reference
+ * @param mixed  $data       User data
  */
 $handler = function ($element, array $properties, &$data)
 {
     // implementation
 );
 ```
+>**TIP:** User data will be passed by reference
 
 ### Namespaces
 For some XML documents, a namespace needs to be registered in order to parse the data properly.

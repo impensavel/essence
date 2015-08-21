@@ -15,7 +15,7 @@ jane@doe.com,jane,doe
 ### Map
 In order to extract data, a property map must be defined.
 Given the simple nature of the CSV format, only **one** map is required.
-The map must be an associative `array` with each property name as key and the respective column index as value. 
+The map must be an associative `array` with each property name as key and the respective column index as value.
 
 ### Data handler
 Besides the map, a data handler must be set. It should be of the type `Closure`, with the following signature:
@@ -24,13 +24,14 @@ Besides the map, a data handler must be set. It should be of the type `Closure`,
 /**
  * @param int   $element    Line number of the current CSV element
  * @param array $properties Associative array with extracted properties
- * @param mixed $data       User data passed by reference
+ * @param mixed $data       User data
  */
 $handler = function ($element, array $properties, &$data)
 {
     // implementation
 );
 ```
+>**TIP:** User data will be passed by reference
 
 ### Implementation
 ```php

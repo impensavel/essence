@@ -62,13 +62,13 @@ To see what arguments the SOAP client accepts, refer to the [documentation](http
 The [webservicex.net](http://www.webservicex.net) website provides access to dozens of web services. The above code is an implementation to one of them.
 
 ## Input
-The `extract()` method expects the input to be an array with the SOAP function call to execute, along with the arguments (if any).
+The `extract()` method expects the input to be an `array` containing the SOAP function call to execute, along with the arguments (if any).
 
 ```php
 $input = array(
     'function'  => 'Foo',
     'arguments' => array(
-        'Bar' => 'baz',
+        'Bar' => 'Baz',
     ),
 );
 
@@ -81,14 +81,15 @@ The options supported by the `extract()` method are the same as the ones in the 
 ## User data
 By default, the handler only has access to the data being extracted, but sometimes access to other data might be necessary.
 
-To solve this, the user data can be passed as a **third** argument of the `extract()` method.
+To solve this, user data can be passed as a **third** argument to the `extract()` method.
 
 ```php
 $config = array(
-    // extract() method configuration
+    // ...
 );
+
 $data = array(
-    // user data
+    // ...
 );
 
 $essence->extract($input, $config, $data);
@@ -97,7 +98,7 @@ $essence->extract($input, $config, $data);
 >**TIP:** The user data is passed by reference, which means that it can be modified by the handler, if needed.
 
 ## Debugging
-Using SOAP/WebServices can be tricky, so it's always helpful to have a bit more of information on what's going on.
+Using SOAP/WebServices can be tricky, so it's always helpful to have a bit more of information on what's happening.
 
 ### Last request
 Each time the `extract()` method is executed, a SOAP request is made. To retrieve the SOAP envelope used for the request, use the `lastRequest()` method.

@@ -133,9 +133,9 @@ try
 }
 ```
 
-## Input types
+## Input
 The `extract()` method allows consuming XML data from a few input types.
-Currently supported are `string`, `resource` (normally a result of a `fopen()`) and `SplFileInfo`.
+Currently supported are `string`, `resource` (normally the result of a `fopen()`) and `SplFileInfo`.
 
 ### String
 ```php
@@ -191,14 +191,15 @@ Refer to the [documentation](http://php.net/manual/en/libxml.constants.php) for 
 ## User data
 By default, the handler only has access to the data being extracted, but sometimes access to other data might be necessary.
 
-To solve this, the user data can be passed as a **third** argument of the `extract()` method.
+To solve this, user data can be passed as a **third** argument to the `extract()` method.
 
 ```php
 $config = array(
-    // extract() method configuration
+    // ...
 );
+
 $data = array(
-    // user data
+    // ...
 );
 
 $essence->extract($input, $config, $data);
@@ -324,7 +325,7 @@ $config = array(
 );
 ```
 
-Values should always be casted when mapping element properties, unless there's a special reason to work with a `DOMNodeList` object, instead.
+Values should be cast to a type when mapping element properties, unless there's a reason to work with a `DOMNodeList`, instead.
 
 ### Documentation
 - [Edankert](http://www.edankert.com/xpathfunctions.html)

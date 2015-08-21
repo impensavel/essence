@@ -48,7 +48,8 @@ $config = array(
         'surname' => 2, // 3rd column
         'email'   => 0, // 1st column
     ),
-    'handler' => function ($element, array $properties, &$data) {
+    'handler' => function ($element, array $properties, &$data)
+    {
         var_dump($properties);
     },
 );
@@ -63,9 +64,9 @@ try {
 }
 ```
 
-## Input types
+## Input
 The `extract()` method allows consuming CSV data from a few input types.
-Currently supported are `string`, `resource` (normally a result of a `fopen()`) and `SplFileInfo`.
+Currently supported are `string`, `resource` (normally the result of a `fopen()`) and `SplFileInfo`.
 
 ### String
 ```php
@@ -101,13 +102,13 @@ $essence->extract($input, array(
 ));
 ```
 
->**TIP:** Line and column count always starts at `0` (zero).
+>**TIP:** Line and column count always start at `0` (zero).
 
 ### delimiter, enclosure & escape
 Sometimes, CSV data can have a slightly different format, depending on the vendor or person who created it.
 By default, the `delimiter` is set to `,` (comma), the `enclosure` is set to `"` (double quote) and the `escape` is set to `\` (backslash).
 
-To extract the following pipe separated data
+To extract the following pipe separated values
 ```
 email|name|surname
 john@doe.com|john|doe
@@ -123,10 +124,10 @@ $essence->extract($input, array(
 ```
 
 ### exceptions
-An `EssenceException` is thrown by **default** when extracting data from an invalid column index.
+Trying to extract data from an invalid column index, will throw an `EssenceException` by default.
 This might happen because of an invalid map (a wrong column index was set) or bad data (some lines in the CSV have less columns).
 
-In the second case, it's probably best to continue extracting data only skipping invalid lines.
+If the second case happens, the `extract()` method can continue extracting data in a best effort manner, skipping invalid lines.
 ```php
 $essence->extract($input, array(
     'exceptions' => false,
@@ -145,14 +146,15 @@ $essence->extract($input, array(
 ## User data
 By default, the handler only has access to the data being extracted, but sometimes access to other data might be necessary.
 
-To solve this, the user data can be passed as a **third** argument of the `extract()` method.
+To solve this, user data can be passed as a **third** argument to the `extract()` method.
 
 ```php
 $config = array(
-    // extract() method configuration
+    // ...
 );
+
 $data = array(
-    // user data
+    // ...
 );
 
 $essence->extract($input, $config, $data);

@@ -100,20 +100,20 @@ $essence->extract($input, array(
 ));
 ```
 
-Line and column count always starts at `0` (zero).
+>**TIP:** Line and column count always starts at `0` (zero).
 
 ### delimiter, enclosure & escape
-Sometimes, CSV data can have a slightly different format, depending on the vendor or person who created the data.
+Sometimes, CSV data can have a slightly different format, depending on the vendor or person who created it.
 By default, the `delimiter` is set to `,` (comma), the `enclosure` is set to `"` (double quote) and the `escape` is set to `\` (backslash).
 
-So, to extract the following data
+To extract the following pipe separated data
 ```
 email|name|surname
 john@doe.com|john|doe
 jane@doe.com|jane|doe
 ```
 
-we would have to do
+this would be the configuration
 
 ```php
 $essence->extract($input, array(
@@ -134,7 +134,7 @@ $essence->extract($input, array(
 
 ### auto_eol
 Depending on the [OS](http://en.wikipedia.org/wiki/Operating_system) in which the CSV data was created, line endings might not be properly recognised when **reading from a file**.
-To (try to) solve the issue, set the `auto_eol` option to `true`.
+To (try to) solve the issue, the `auto_eol` option should be set to `true`.
 ```php
 $essence->extract($input, array(
     'auto_eol' => true,

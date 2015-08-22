@@ -103,7 +103,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     public function testInstantiationPass()
     {
         $essence = new CSVEssence(array(
-            'map'      => array(
+            'map'     => array(
                 'name'    => 0,
                 'surname' => 1,
             ),

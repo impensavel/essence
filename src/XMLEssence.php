@@ -142,7 +142,6 @@ class XMLEssence extends AbstractEssence
 
         try {
             return $this->doc->importNode($node, true);
-
         } catch (DOMException $e) {
             throw new EssenceException('Node import failed', 0, $e);
         }
@@ -172,7 +171,6 @@ class XMLEssence extends AbstractEssence
 
             // skip to Element
             $this->skip = ($this->skip == $this->current) ? null : $this->skip;
-
         } while ($this->skip !== null);
 
         return true;
@@ -205,7 +203,7 @@ class XMLEssence extends AbstractEssence
         $xpath = trim($xpath, '/');
 
         if (isset($this->data[$xpath])) {
-           return $this->data[$xpath];
+            return $this->data[$xpath];
         }
 
         throw new EssenceException('Unregistered Element XPath: "/'.$xpath.'"');
@@ -273,14 +271,12 @@ class XMLEssence extends AbstractEssence
 
         while ($this->nextElement()) {
             if (! $this->reader->isEmptyElement && $this->reader->nodeType === XMLReader::ELEMENT && $this->isMapped($this->current)) {
-
                 $node = $this->getCurrentNode();
 
                 // current element properties
                 $properties = array();
 
                 foreach ($this->maps[$this->current] as $key => $xpath) {
-
                     $xpath = trim($xpath);
 
                     // get registered Element data

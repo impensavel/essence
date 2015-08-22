@@ -143,7 +143,6 @@ class SOAPEssence extends XMLEssence
             $this->lastResponse = $this->client->__getLastResponse();
 
             return parent::extract($this->lastResponse, $config, $data);
-
         } catch (SoapFault $e) {
             throw new EssenceException($e->getMessage(), $e->getCode(), $e);
         }

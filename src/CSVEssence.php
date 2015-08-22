@@ -53,7 +53,6 @@ class CSVEssence extends AbstractEssence
                 $data->rewind();
 
                 return $data;
-
             } catch (RuntimeException $e) {
                 throw new EssenceException('Could not open "'.$input->getPathname().'" for parsing', 0, $e);
             }

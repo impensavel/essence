@@ -135,7 +135,7 @@ class CSVEssence extends AbstractEssence
                 &$data,
             );
 
-            call_user_func($this->handlers['default'], $arguments);
+            call_user_func_array($this->handlers['default'], $arguments);
         }
 
         return true;

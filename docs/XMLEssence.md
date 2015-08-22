@@ -225,7 +225,8 @@ $config = array(
             'surname' => 'string(Surname)',
             'email'   => 'string(Email)',
         ),
-        'handler' => function ($element, array $properties, &$data) {
+        'handler' => function ($element, array $properties, &$data) 
+        {
             // skip to the next /Persons/Person element if the email is invalid
             if (filter_var($properties['email'], FILTER_VALIDATE_EMAIL) === false) {
                 return '/Persons/Person';
@@ -240,7 +241,8 @@ $config = array(
             'address'  => 'string(Name)',
             'postcode' => 'string(Postcode)',
         ),
-        'handler' => function ($element, array $properties, &$data) {
+        'handler' => function ($element, array $properties, &$data) 
+        {
             // do something with the data
         },
     ),
@@ -260,7 +262,8 @@ $config = array(
             'surname' => 'string(Surname)',
             'email'   => 'string(Email)',
         ),
-        'handler' => function ($element, array $properties, &$data) {
+        'handler' => function ($element, array $properties, &$data) 
+        {
             // store data using a Laravel Person model
             $person = Person::create($properties);
             
@@ -277,7 +280,8 @@ $config = array(
             'address'   => 'string(Name)',
             'postcode'  => 'string(Postcode)',
         ),
-        'handler' => function ($element, array $properties, &$data) {
+        'handler' => function ($element, array $properties, &$data) 
+        {
             // store data using a Laravel Address model
             Address::create($properties);
         },

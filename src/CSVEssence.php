@@ -34,13 +34,13 @@ class CSVEssence extends AbstractEssence
     /**
      * Prepare data for extraction
      *
-     * @access  private
+     * @access  protected
      * @param   mixed  $input  Input data
      * @param   array  $config Configuration settings
      * @throws  EssenceException
      * @return  array|SplFileObject
      */
-    private function provision($input, array $config)
+    protected function provision($input, array $config)
     {
         if ($input instanceof SplFileInfo) {
             try {

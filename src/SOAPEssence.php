@@ -20,34 +20,34 @@ class SOAPEssence extends XMLEssence
     /**
      * SOAP Client object
      *
-     * @access  private
+     * @access  protected
      * @var     SoapClient
      */
-    private $client;
+    protected $client;
 
     /**
      * Last SOAP request
      *
-     * @access  private
+     * @access  protected
      * @var     string
      */
-    private $lastRequest;
+    protected $lastRequest;
 
     /**
      * Last SOAP response
      *
-     * @access  private
+     * @access  protected
      * @var     string
      */
-    private $lastResponse;
+    protected $lastResponse;
 
     /**
      * Last SOAP response headers
      *
-     * @access  private
+     * @access  protected
      * @var     array
      */
-    private $lastResponseHeaders = array();
+    protected $lastResponseHeaders = array();
 
     /**
      * SOAPEssence constructor

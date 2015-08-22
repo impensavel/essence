@@ -25,58 +25,58 @@ class XMLEssence extends AbstractEssence
     /**
      * XML Reader object
      *
-     * @access  private
+     * @access  protected
      * @var     XMLReader
      */
-    private $reader;
+    protected $reader;
 
     /**
      * DOM Document object
      *
-     * @access  private
+     * @access  protected
      * @var     DOMDocument
      */
-    private $doc;
+    protected $doc;
 
     /**
      * DOM XPath object
      *
-     * @access  private
+     * @access  protected
      * @var     DOMXPath
      */
-    private $element;
+    protected $element;
 
     /**
      * Registered Element data
      *
-     * @access  private
+     * @access  protected
      * @var     array
      */
-    private $data = array();
+    protected $data = array();
 
     /**
      * Current Element XPath stack
      *
-     * @access  private
+     * @access  protected
      * @var     array
      */
-    private $stack = array();
+    protected $stack = array();
 
     /**
      * Current Element XPath
      *
-     * @access  private
+     * @access  protected
      * @var     string
      */
-    private $current;
+    protected $current;
 
     /**
      * Skip to Element XPath
      *
-     * @access  private
+     * @access  protected
      * @var     string
      */
-    private $skip;
+    protected $skip;
 
     /**
      * XMLEssence constructor
@@ -120,11 +120,11 @@ class XMLEssence extends AbstractEssence
     /**
      * Get the current node
      *
-     * @access  private
+     * @access  protected
      * @throws  EssenceException
      * @return  DOMNode
      */
-    private function getCurrentNode()
+    protected function getCurrentNode()
     {
         // clear the libXML error buffer
         libxml_clear_errors();
@@ -150,10 +150,10 @@ class XMLEssence extends AbstractEssence
     /**
      * Read the next Element and handle skipping
      *
-     * @access  private
+     * @access  protected
      * @return  bool
      */
-    private function nextElement()
+    protected function nextElement()
     {
         do {
             if (! $this->reader->read()) {
@@ -179,11 +179,11 @@ class XMLEssence extends AbstractEssence
     /**
      * Check if an Element XPath is mapped
      *
-     * @access  private
+     * @access  protected
      * @param   string  $xpath Element XPath
      * @return  bool
      */
-    private function isMapped($xpath)
+    protected function isMapped($xpath)
     {
         $xpath = trim($xpath, '/');
 
@@ -193,12 +193,12 @@ class XMLEssence extends AbstractEssence
     /**
      * Get registered Element data
      *
-     * @access  private
+     * @access  protected
      * @param   string  $xpath Element XPath
      * @throws  EssenceException
      * @return  mixed
      */
-    private function getData($xpath)
+    protected function getData($xpath)
     {
         $xpath = trim($xpath, '/');
 
@@ -212,13 +212,13 @@ class XMLEssence extends AbstractEssence
     /**
      * Prepare data for extraction
      *
-     * @access  private
+     * @access  protected
      * @param   mixed  $input  Input data
      * @param   array  $config Configuration settings
      * @throws  EssenceException
      * @return  void
      */
-    private function provision($input, array $config)
+    protected function provision($input, array $config)
     {
         if ($input instanceof SplFileInfo) {
             if (@$this->reader->open($input->getPathname(), $config['encoding'], $config['options'])) {

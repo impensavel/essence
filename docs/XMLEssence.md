@@ -336,7 +336,8 @@ Sometimes it may be easier to have a `DOMNodeList` and work with it, instead of 
 Since version `2.1.0`, a helper method has been added to convert `DOMNodeList` objects into `array` types.
 
 #### DOMNodeListToArray
-This `static` method converts a `DOMNodeList` object into an indexed `array` (by default), or an associative one when the second argument is set to `true`.
+This `static` method converts a `DOMNodeList` object into an indexed `array` (by default), or to an associative one when the **second** argument is set to `true`.
+By default, node attributes are not included in the `array`. To include them, pass `true` as the value of the **third** argument.
 
 ```php
 <?php
@@ -356,9 +357,15 @@ $config = array(
         ),
         'handler' => function ($element, array $properties, &$data) 
         {
+            // return an associative array
+            $associative = false;
+            
+            // include node attributes
+            $attributes = true;
+
             foreach ($properties as $name => $value) {
                 if ($value instanceof DOMNodeList) {
-                    $properties[$name] = XMLEssence::DOMNodeListToArray($value);
+                    $properties[$name] = XMLEssence::DOMNodeListToArray($value, $associative, $attributes);
                 }
             }
 
@@ -378,7 +385,7 @@ try
 }
 ```
 
-Indexed `array` output:
+Indexed `array` with node attributes (`@` key) for the `addresses` element:
 
 ```php
 array(4) {
@@ -421,7 +428,7 @@ array(4) {
 }
 ```
 
-Associative `array` output:
+Associative `array` with node attributes (`@` key) for the `addresses` element:
 ```php
 array(4) {
   ["name"]=>

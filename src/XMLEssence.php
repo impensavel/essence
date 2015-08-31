@@ -15,6 +15,8 @@ namespace Impensavel\Essence;
 use DOMDocument;
 use DOMException;
 use DOMNode;
+use DOMNodeList;
+use DOMText;
 use DOMXPath;
 use LibXMLError;
 use SplFileInfo;
@@ -255,6 +257,112 @@ class XMLEssence extends AbstractEssence
         }
 
         throw new EssenceException('Invalid input type: '.gettype($input));
+    }
+
+    /**
+     * Count the children of a DOMNode
+     *
+     * @static
+     * @access  protected
+     * @param   DOMNode $node
+     * @return  int
+     */
+    protected static function DOMNodeChildCount(DOMNode $node)
+    {
+        $count = 0;
+
+        if ($node->hasChildNodes()) {
+            foreach ($node->childNodes as $child) {
+                if ($child->nodeType == XML_ELEMENT_NODE) {
+                    $count++;
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Get the DONNode attributes
+     *
+     * @static
+     * @access  protected
+     * @param   DOMNode   $node
+     * @return  array
+     */
+    protected static function DOMNodeAttributes(DOMNode $node)
+    {
+        $attributes = array();
+
+        foreach ($node->attributes as $attribute) {
+            $attributes[$attribute->name] = $attribute->value;
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Get the DOMNode value
+     *
+     * @static
+     * @access  protected
+     * @param   DOMNode $node
+     * @param   bool    $associative
+     * @return  mixed
+     */
+    protected static function DOMNodeValue(DOMNode $node, $associative = false)
+    {
+        // return the value when we're dealing with a leaf node without attributes
+        if (static::DOMNodeChildCount($node) == 0 && ! $node->hasAttributes()) {
+            return $node->nodeValue;
+        }
+
+        $children = array();
+
+        if ($node->hasAttributes()) {
+            $children['@'] = static::DOMNodeAttributes($node);
+        }
+
+        foreach ($node->childNodes as $child) {
+            // skip whitespace text nodes
+            if ($child->nodeType == XML_TEXT_NODE) {
+                continue;
+            }
+
+            if (static::DOMNodeChildCount($child) > 0) {
+                $value = static::DOMNodeValue($child, $associative);
+            } else {
+                $value = $child->nodeValue;
+            }
+
+            if ($associative) {
+                $children[$child->nodeName][] = $value;
+            } else {
+                $children[] = $value;
+            }
+        }
+
+        return $children;
+    }
+
+    /**
+     * Convert a DOMNodeList into an Array
+     *
+     * @static
+     * @access  public
+     * @param   DOMNodeList $nodeList
+     * @param   bool        $associative
+     * @return  array
+     */
+    public static function DOMNodeListToArray(DOMNodeList $nodeList, $associative = false)
+    {
+        $nodes = array();
+
+        foreach ($nodeList as $node) {
+            $nodes[] = static::DOMNodeValue($node, $associative);
+        }
+
+        return $nodes;
     }
 
     /**

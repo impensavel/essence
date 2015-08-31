@@ -293,7 +293,7 @@ $config = array(
 When a handler returns, any value than cannot be mapped to an *absolute* XPath (otherwise it would skip), will be stored.
 Previous values will be overwritten each time the handler returns.
 
-On the map properties, by passing `#<element XPath>` instead of an XPath expression, the stored value registered to that element XPath will be used instead.
+By prefixing a `#` to the _absolute_ XPath of a mapped element (e.g. `#/Persons/Person`) on a map property value, the stored value registered to that element XPath will be used instead.
 
 An `EssenceException` will be thrown if the XPath is not registered.
 
@@ -331,6 +331,153 @@ $config = array(
 
 Values should be cast to a type when mapping element properties, unless there's a reason to work with a `DOMNodeList`, instead.
 
-### Documentation
+### DOMNodeLists
+Sometimes it may be easier to have a `DOMNodeList` and work with it, instead of having to set a new element map and data handler.
+Since version `2.1.0`, a helper method has been added to convert `DOMNodeList` objects into `array` types.
+
+#### DOMNodeListToArray
+This `static` method converts a `DOMNodeList` object into an indexed `array` (by default), or an associative one when the second argument is set to `true`.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+use Impensavel\Essence\EssenceException;
+use Impensavel\Essence\XMLEssence;
+
+$config = array(
+    '/Persons/Person' => array(
+        'map'     => array(
+            'name'      => 'string(Name)',
+            'surname'   => 'string(Surname)',
+            'email'     => 'string(Email)',
+            'addresses' => 'Addresses',
+        ),
+        'handler' => function ($element, array $properties, &$data) 
+        {
+            foreach ($properties as $name => $value) {
+                if ($value instanceof DOMNodeList) {
+                    $properties[$name] = XMLEssence::DOMNodeListToArray($value);
+                }
+            }
+
+            var_dump($properties);
+        },
+    ),
+);
+
+try
+{
+    $essence = new XMLEssence($config);
+
+    $essence->extract(new SplFileInfo('input.xml'));
+
+} catch (EssenceException $e) {
+    // handle exceptions
+}
+```
+
+Indexed `array` output:
+
+```php
+array(4) {
+  ["name"]=>
+  string(4) "Anna"
+  ["surname"]=>
+  string(5) "Adams"
+  ["email"]=>
+  string(22) "anna.adams@example.com"
+  ["addresses"]=>
+  array(1) {
+    [0]=>
+    array(2) {
+      [0]=>
+      array(3) {
+        ["@"]=>
+        array(1) {
+          ["Type"]=>
+          string(4) "Home"
+        }
+        [0]=>
+        string(9) "Rocky Row"
+        [1]=>
+        string(4) "6181"
+      }
+      [1]=>
+      array(3) {
+        ["@"]=>
+        array(1) {
+          ["Type"]=>
+          string(4) "Work"
+        }
+        [0]=>
+        string(12) "Round Valley"
+        [1]=>
+        string(4) "6781"
+      }
+    }
+  }
+}
+```
+
+Associative `array` output:
+```php
+array(4) {
+  ["name"]=>
+  string(4) "Anna"
+  ["surname"]=>
+  string(5) "Adams"
+  ["email"]=>
+  string(22) "anna.adams@example.com"
+  ["addresses"]=>
+  array(1) {
+    [0]=>
+    array(1) {
+      ["Address"]=>
+      array(2) {
+        [0]=>
+        array(3) {
+          ["@"]=>
+          array(1) {
+            ["Type"]=>
+            string(4) "Home"
+          }
+          ["Name"]=>
+          array(1) {
+            [0]=>
+            string(9) "Rocky Row"
+          }
+          ["Postcode"]=>
+          array(1) {
+            [0]=>
+            string(4) "6181"
+          }
+        }
+        [1]=>
+        array(3) {
+          ["@"]=>
+          array(1) {
+            ["Type"]=>
+            string(4) "Work"
+          }
+          ["Name"]=>
+          array(1) {
+            [0]=>
+            string(12) "Round Valley"
+          }
+          ["Postcode"]=>
+          array(1) {
+            [0]=>
+            string(4) "6781"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### Other useful documentation
 - [Edankert](http://www.edankert.com/xpathfunctions.html)
 - [W3Schools](http://www.w3schools.com/xpath/)

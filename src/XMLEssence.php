@@ -325,7 +325,7 @@ class XMLEssence extends AbstractEssence
 
         foreach ($node->childNodes as $child) {
             // skip whitespace text nodes
-            if ($child->nodeType == XML_TEXT_NODE) {
+            if ($child instanceof DOMText && $child->isWhitespaceInElementContent()) {
                 continue;
             }
 

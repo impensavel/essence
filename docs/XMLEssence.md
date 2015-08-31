@@ -336,8 +336,9 @@ Sometimes it may be easier to have a `DOMNodeList` and work with it, instead of 
 Since version `2.1.0`, a helper method has been added to convert `DOMNodeList` objects into `array` types.
 
 #### DOMNodeListToArray
-This `static` method converts a `DOMNodeList` object into an indexed `array` (by default), or to an associative one when the **second** argument is set to `true`.
-By default, node attributes are not included in the `array`. To include them, pass `true` as the value of the **third** argument.
+This `static` method converts a `DOMNodeList` object into an indexed `array` (by default), or to an associative one when the **second** argument is `true`.
+
+By default, node attributes are not included in the `array`. To include them, set the value of the **third** argument to `true`.
 
 ```php
 <?php

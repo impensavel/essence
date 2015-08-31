@@ -307,19 +307,21 @@ class XMLEssence extends AbstractEssence
      * @static
      * @access  protected
      * @param   DOMNode $node
-     * @param   bool    $associative
+     * @param   bool    $associative Return associative array?
+     * @param   bool    $attributes  Include node attributes?
      * @return  mixed
      */
-    protected static function DOMNodeValue(DOMNode $node, $associative = false)
+    protected static function DOMNodeValue(DOMNode $node, $associative = false, $attributes = false)
     {
-        // return the value when we're dealing with a leaf node without attributes
-        if (static::DOMNodeChildCount($node) == 0 && ! $node->hasAttributes()) {
+        // return the value immediately when we're dealing with a leaf
+        // node without attributes or we simply don't want them included
+        if (static::DOMNodeChildCount($node) == 0 && ($node->hasAttributes() === false || $attributes === false)) {
             return $node->nodeValue;
         }
 
         $children = array();
 
-        if ($node->hasAttributes()) {
+        if ($node->hasAttributes() && $attributes) {
             $children['@'] = static::DOMNodeAttributes($node);
         }
 
@@ -351,15 +353,16 @@ class XMLEssence extends AbstractEssence
      * @static
      * @access  public
      * @param   DOMNodeList $nodeList
-     * @param   bool        $associative
+     * @param   bool        $associative Return associative array?
+     * @param   bool        $attributes  Include node attributes?
      * @return  array
      */
-    public static function DOMNodeListToArray(DOMNodeList $nodeList, $associative = false)
+    public static function DOMNodeListToArray(DOMNodeList $nodeList, $associative = false, $attributes = false)
     {
         $nodes = array();
 
         foreach ($nodeList as $node) {
-            $nodes[] = static::DOMNodeValue($node, $associative);
+            $nodes[] = static::DOMNodeValue($node, $associative, $attributes);
         }
 
         return $nodes;

@@ -25,9 +25,12 @@
 - XML namespaces are now registered in the `Impensavel\SOAPEssence` and `Impensavel\XMLEssence` constructors 
 - The documentation has been updated to reflect the above changes
 
+### Removed
+- XML namespace registration from the `extract()` method via options
+
 ## 1.1.1 - 2015-04-29
 ### Added
-- `.gitattributes` file added
+- `.gitattributes` file added for cleaner installations/deployments
 
 ### Changed
 - `Impensavel\SOAPEssence` implementation example in the documentation

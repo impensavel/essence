@@ -10,11 +10,13 @@
  * with this source code.
  */
 
-namespace Impensavel\Essence;
+namespace Impensavel\Essence\Tests;
 
 use SplFileInfo;
 
 use PHPUnit_Framework_TestCase;
+
+use Impensavel\Essence\XMLEssence;
 
 class XMLEssenceTest extends PHPUnit_Framework_TestCase
 {

@@ -10,11 +10,13 @@
  * with this source code.
  */
 
-namespace Impensavel\Essence;
+namespace Impensavel\Essence\Tests;
 
 use SplFileInfo;
 
 use PHPUnit_Framework_TestCase;
+
+use Impensavel\Essence\CSVEssence;
 
 class CSVEssenceTest extends PHPUnit_Framework_TestCase
 {

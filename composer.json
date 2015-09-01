@@ -32,5 +32,10 @@
         "psr-4": {
             "Impensavel\\Essence\\": "src/"
         }
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Impensavel\\Essence\\Tests\\": "tests/"
+      }
     }
 }

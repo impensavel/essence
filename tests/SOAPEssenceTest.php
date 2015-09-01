@@ -10,9 +10,11 @@
  * with this source code.
  */
 
-namespace Impensavel\Essence;
+namespace Impensavel\Essence\Tests;
 
 use PHPUnit_Framework_TestCase;
+
+use Impensavel\Essence\SOAPEssence;
 
 class SOAPEssenceTest extends PHPUnit_Framework_TestCase
 {

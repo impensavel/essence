@@ -48,7 +48,7 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationPass()
     {
-        $essence = new SOAPEssence(array(
+        $elements = array(
             '/Foo/Bar' => array(
                 'map'     => array(),
                 'handler' => function ($element, array $properties, &$data)
@@ -56,12 +56,18 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
                     // ...
                 },
             ),
-        ), null, array(
-            'ns' => 'http://foo.bar/baz'
-        ), array(
+        );
+
+        $namespaces = array(
+            'ns' => 'http://foo.bar/baz',
+        );
+
+        $options = array(
             'uri'      => 'foo',
             'location' => 'bar',
-        ));
+        );
+
+        $essence = new SOAPEssence($elements, null, $namespaces, $options);
 
         $this->assertInstanceOf('\Impensavel\Essence\SOAPEssence', $essence);
 
@@ -101,11 +107,10 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test extract() method to FAIL (invalid URL)
+     * Test extract() method to FAIL (invalid WSDL)
      *
-     * @depends                  testInstantiationPass
-     * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage Unable to parse URL
+     * @depends           testInstantiationPass
+     * @expectedException \Impensavel\Essence\EssenceException
      *
      * @access  public
      * @param   SOAPEssence $essence

@@ -295,7 +295,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      *
      * @depends                  testInstantiationPass
      * @expectedException        \Impensavel\Essence\EssenceException
-     * @expectedExceptionMessage Invalid resource type: Socket
+     * @expectedExceptionMessage Invalid resource type: curl
      *
      * @access  public
      * @param   CSVEssence $essence
@@ -303,7 +303,8 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testExtractResourceFailInvalidType(CSVEssence $essence)
     {
-        $input = socket_create(AF_UNIX, SOCK_STREAM, 0);
+        // create a resource of a type different than stream
+        $input = curl_init();
 
         $essence->extract($input);
     }

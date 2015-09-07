@@ -1,3 +1,16 @@
+## 2.1.2 - 2015-09-07
+### Added
+- fabpot/php-cs-fixer dev dependency
+- composer scripts for testing and fix coding style
+
+### Changed
+- Minor updates to the documentation
+- Tests have been moved to their own namespace
+- PHP7 tests in Travis are no longer allowed to fail
+
+### Fixed
+- Running tests in HHVM are once again successful
+
 ## 2.1.1 - 2015-08-31
 ### Changed
 - `DOMNodeListToArray()` doesn't return node attributes by default anymore

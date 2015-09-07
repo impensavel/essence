@@ -81,7 +81,7 @@ class XMLEssence extends AbstractEssence
     protected $skip;
 
     /**
-     * XMLEssence constructor
+     * XML Essence constructor
      *
      * @access  public
      * @param   array  $elements   Elements

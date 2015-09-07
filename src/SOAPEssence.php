@@ -50,7 +50,7 @@ class SOAPEssence extends XMLEssence
     protected $lastResponseHeaders = array();
 
     /**
-     * SOAPEssence constructor
+     * SOAP Essence constructor
      *
      * @access  public
      * @param   array  $elements   Elements

@@ -19,7 +19,7 @@ use SplFileObject;
 class CSVEssence extends AbstractEssence
 {
     /**
-     * CSVEssence constructor
+     * CSV Essence constructor
      *
      * @access  public
      * @param   array  $element Element

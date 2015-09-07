@@ -26,7 +26,8 @@
         "ext-xmlreader": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0",
+        "fabpot/php-cs-fixer": "~1.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,8 +35,12 @@
         }
     },
     "autoload-dev": {
-      "psr-4": {
-        "Impensavel\\Essence\\Tests\\": "tests/"
-      }
+        "psr-4": {
+            "Impensavel\\Essence\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "cs": "php-cs-fixer fix src --level=psr2 --verbose",
+        "test": "phpunit --verbose"
     }
 }

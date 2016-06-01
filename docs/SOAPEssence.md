@@ -18,8 +18,7 @@ $elements = array(
         'map'     => array(
             'rate' => 'string(ns:ConversionRateResult)',
         ),
-        'handler' => function ($element, array $properties, &$data) 
-        {
+        'handler' => function ($element, array $properties, &$data) {
             var_dump($properties);
         },
     ),

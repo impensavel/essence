@@ -26,8 +26,7 @@ Besides the map, a data handler must be set. It should be of the type `Closure`,
  * @param array $properties Associative array with extracted properties
  * @param mixed $data       User data
  */
-$handler = function ($element, array $properties, &$data)
-{
+$handler = function ($element, array $properties, &$data) {
     // implementation
 );
 ```
@@ -48,8 +47,7 @@ $config = array(
         'surname' => 2, // 3rd column
         'email'   => 0, // 1st column
     ),
-    'handler' => function ($element, array $properties, &$data)
-    {
+    'handler' => function ($element, array $properties, &$data) {
         var_dump($properties);
     },
 );

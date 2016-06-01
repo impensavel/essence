@@ -63,8 +63,7 @@ Each element configuration must be an associative `array`, with the *absolute* X
     'map'     => array(
         // ...
     ),
-    'handler' => function ($element, array $properties, &$data) 
-    {
+    'handler' => function ($element, array $properties, &$data) {
         // ...
     },
 ),
@@ -82,8 +81,7 @@ The data handler should be of the type `Closure` and have the following signatur
  * @param array  $properties Associative array with extracted properties
  * @param mixed  $data       User data
  */
-$handler = function ($element, array $properties, &$data)
-{
+$handler = function ($element, array $properties, &$data) {
     // implementation
 );
 ```
@@ -113,8 +111,7 @@ $config = array(
             'surname' => 'string(Surname)',
             'email'   => 'string(Email)',
         ),
-        'handler' => function ($element, array $properties, &$data) 
-        {
+        'handler' => function ($element, array $properties, &$data) {
             var_dump($properties);
         },
     ),
@@ -158,7 +155,7 @@ $essence->extract($input);
 
 ### SplFileInfo
 ```php
-$input = new SplFileInfo('input.xml')
+$input = new SplFileInfo('input.xml');
 
 $essence->extract($input);
 ```
@@ -225,8 +222,7 @@ $config = array(
             'surname' => 'string(Surname)',
             'email'   => 'string(Email)',
         ),
-        'handler' => function ($element, array $properties, &$data) 
-        {
+        'handler' => function ($element, array $properties, &$data) {
             // skip to the next /Persons/Person element if the email is invalid
             if (filter_var($properties['email'], FILTER_VALIDATE_EMAIL) === false) {
                 return '/Persons/Person';
@@ -241,8 +237,7 @@ $config = array(
             'address'  => 'string(Name)',
             'postcode' => 'string(Postcode)',
         ),
-        'handler' => function ($element, array $properties, &$data) 
-        {
+        'handler' => function ($element, array $properties, &$data) {
             // do something with the data
         },
     ),
@@ -262,8 +257,7 @@ $config = array(
             'surname' => 'string(Surname)',
             'email'   => 'string(Email)',
         ),
-        'handler' => function ($element, array $properties, &$data) 
-        {
+        'handler' => function ($element, array $properties, &$data) {
             // store data using a Laravel Person model
             $person = Person::create($properties);
             
@@ -280,8 +274,7 @@ $config = array(
             'address'   => 'string(Name)',
             'postcode'  => 'string(Postcode)',
         ),
-        'handler' => function ($element, array $properties, &$data) 
-        {
+        'handler' => function ($element, array $properties, &$data) {
             // store data using a Laravel Address model
             Address::create($properties);
         },
@@ -356,8 +349,7 @@ $config = array(
             'email'     => 'string(Email)',
             'addresses' => 'Addresses',
         ),
-        'handler' => function ($element, array $properties, &$data) 
-        {
+        'handler' => function ($element, array $properties, &$data) {
             // return an associative array
             $associative = false;
             

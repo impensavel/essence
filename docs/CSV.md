@@ -38,7 +38,7 @@ $handler = function ($element, array $properties, &$data) {
 
 require 'vendor/autoload.php';
 
-use Impensavel\Essence\CSVEssence;
+use Impensavel\Essence\CSV;
 use Impensavel\Essence\EssenceException;
 
 $config = array(
@@ -53,7 +53,7 @@ $config = array(
 );
 
 try {
-    $essence = new CSVEssence($config);
+    $essence = new CSV($config);
     
     $essence->extract(new SplFileInfo('input.csv'));
 

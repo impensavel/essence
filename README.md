@@ -4,9 +4,8 @@
 
 A PHP library to simplify data extraction from CSV and XML/WebService/SOAP sources.
 
-This library aims for [PSR-1][], [PSR-2][] and [PSR-4][] standards compliance.
+This library aims for [PSR-2][] and [PSR-4][] standards compliance.
 
-[PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 
@@ -19,9 +18,9 @@ composer require "impensavel/essence"
 ```
 
 ## Class documentation
-- [CSV Essence](docs/CSVEssence.md)
-- [SOAP Essence](docs/SOAPEssence.md)
-- [XML Essence](docs/XMLEssence.md)
+- [CSV](docs/CSV.md)
+- [SOAP](docs/SOAP.md)
+- [XML](docs/XML.md)
 
 ## License
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

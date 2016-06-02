@@ -11,7 +11,7 @@ Examples of how to use the class are provided in this document, along with an ex
 require 'vendor/autoload.php';
 
 use Impensavel\Essence\EssenceException;
-use Impensavel\Essence\SOAPEssence;
+use Impensavel\Essence\SOAP;
 
 $elements = array(
     '/soap:Envelope/soap:Body/ConversionRateResponse' => array(
@@ -39,7 +39,7 @@ $options = array(
 
 try
 {
-    $essence = new SOAPEssence($elements, $wsdl, $namespaces, $options);
+    $essence = new SOAP($elements, $wsdl, $namespaces, $options);
 
     $input = array(
         'function'  => 'ConversionRate',

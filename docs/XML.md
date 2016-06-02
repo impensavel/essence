@@ -102,7 +102,7 @@ $namespaces = array(
 require 'vendor/autoload.php';
 
 use Impensavel\Essence\EssenceException;
-use Impensavel\Essence\XMLEssence;
+use Impensavel\Essence\XML;
 
 $config = array(
     '/Persons/Person' => array(
@@ -121,7 +121,7 @@ $namespaces = array();
 
 try
 {
-    $essence = new XMLEssence($config, $namespaces);
+    $essence = new XML($config, $namespaces);
 
     $essence->extract(new SplFileInfo('input.xml'));
 
@@ -339,7 +339,7 @@ By default, node attributes are not included in the `array`. To include them, se
 require 'vendor/autoload.php';
 
 use Impensavel\Essence\EssenceException;
-use Impensavel\Essence\XMLEssence;
+use Impensavel\Essence\XML;
 
 $config = array(
     '/Persons/Person' => array(
@@ -358,7 +358,7 @@ $config = array(
 
             foreach ($properties as $name => $value) {
                 if ($value instanceof DOMNodeList) {
-                    $properties[$name] = XMLEssence::DOMNodeListToArray($value, $associative, $attributes);
+                    $properties[$name] = XML::DOMNodeListToArray($value, $associative, $attributes);
                 }
             }
 
@@ -369,7 +369,7 @@ $config = array(
 
 try
 {
-    $essence = new XMLEssence($config);
+    $essence = new XML($config);
 
     $essence->extract(new SplFileInfo('input.xml'));
 

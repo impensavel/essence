@@ -16,9 +16,9 @@ use SplFileInfo;
 
 use PHPUnit_Framework_TestCase;
 
-use Impensavel\Essence\XMLEssence;
+use Impensavel\Essence\XML;
 
-class XMLEssenceTest extends PHPUnit_Framework_TestCase
+class XMLTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Test input file to PASS (readability)
@@ -29,8 +29,8 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
     public function testInputFilesPass()
     {
         $files = array(
-            __DIR__.'/input/xml/valid.xml',
-            __DIR__.'/input/xml/invalid.xml',
+            'invalid' => __DIR__.'/input/xml/invalid.xml',
+            'valid'   => __DIR__.'/input/xml/valid.xml',
         );
 
         foreach ($files as $file) {
@@ -51,7 +51,7 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationFailMapMustBeArray()
     {
-        new XMLEssence(array(
+        new XML(array(
             '/Persons/Person' => array(
                 'map' => true,
             ),
@@ -69,7 +69,7 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationFailDataHandlerNotSet()
     {
-        new XMLEssence(array(
+        new XML(array(
             '/Persons/Person' => array(
                 'map' => array(
                     'name'    => 'string(Name)',
@@ -91,7 +91,7 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationFailInvalidDataHandler()
     {
-        new XMLEssence(array(
+        new XML(array(
             '/Persons/Person' => array(
                 'map'     => array(
                     'name'    => 'string(Name)',
@@ -107,11 +107,11 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * Test instantiation to PASS
      *
      * @access  public
-     * @return  XMLEssence
+     * @return  XML
      */
     public function testInstantiationPass()
     {
-        $essence = new XMLEssence(array(
+        $essence = new XML(array(
             '/Persons/Person' => array(
                 'map'     => array(
                     'name'    => 'string(Name)',
@@ -136,7 +136,7 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
             ),
         ));
 
-        $this->assertInstanceOf('\Impensavel\Essence\XMLEssence', $essence);
+        $this->assertInstanceOf('\Impensavel\Essence\XML', $essence);
 
         return $essence;
     }
@@ -149,10 +149,10 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Invalid input type: boolean
      *
      * @access  public
-     * @param   XMLEssence $essence
+     * @param   XML    $essence
      * @return  void
      */
-    public function testExtractFailInvalidInputType(XMLEssence $essence)
+    public function testExtractFailInvalidInputType(XML $essence)
     {
         $essence->extract(true);
     }
@@ -165,10 +165,10 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Could not open "invalid.xml" for parsing
      *
      * @access  public
-     * @param   XMLEssence $essence
+     * @param   XML    $essence
      * @return  void
      */
-    public function testExtractSplFileInfoFailInvalidFile(XMLEssence $essence)
+    public function testExtractSplFileInfoFailInvalidFile(XML $essence)
     {
         $input = new SplFileInfo('invalid.xml');
 
@@ -182,13 +182,13 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @depends testInputFilesPass
      *
      * @access  public
-     * @param   XMLEssence $essence
-     * @param   array      $files
+     * @param   XML    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractStringPass(XMLEssence $essence, array $files)
+    public function testExtractStringPass(XML $essence, array $files)
     {
-        $input = file_get_contents(current($files));
+        $input = file_get_contents($files['valid']);
 
         $result = $essence->extract($input);
 
@@ -202,13 +202,13 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @depends testInputFilesPass
      *
      * @access  public
-     * @param   XMLEssence $essence
-     * @param   array      $files
+     * @param   XML    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractSplFileInfoPass(XMLEssence $essence, array $files)
+    public function testExtractSplFileInfoPass(XML $essence, array $files)
     {
-        $input = new SplFileInfo(current($files));
+        $input = new SplFileInfo($files['valid']);
 
         $result = $essence->extract($input);
 
@@ -222,13 +222,13 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @depends testInputFilesPass
      *
      * @access  public
-     * @param   XMLEssence $essence
-     * @param   array      $files
+     * @param   XML    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractResourcePass(XMLEssence $essence, array $files)
+    public function testExtractResourcePass(XML $essence, array $files)
     {
-        $input = fopen(current($files), 'r');
+        $input = fopen($files['valid'], 'r');
 
         $result = $essence->extract($input);
 
@@ -243,10 +243,10 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Invalid resource type: curl
      *
      * @access  public
-     * @param   XMLEssence $essence
+     * @param   XML    $essence
      * @return  void
      */
-    public function testExtractResourceFailInvalidType(XMLEssence $essence)
+    public function testExtractResourceFailInvalidType(XML $essence)
     {
         // create a resource of a type different than stream
         $input = curl_init();
@@ -263,13 +263,13 @@ class XMLEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage xmlParseEntityRef: no name @ line #9 [Persons/Person]
      *
      * @access  public
-     * @param   XMLEssence $essence
-     * @param   array      $files
+     * @param   XML    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractFailInvalidXML(XMLEssence $essence, array $files)
+    public function testExtractFailInvalidXML(XML $essence, array $files)
     {
-        $input = new SplFileInfo(end($files));
+        $input = new SplFileInfo($files['invalid']);
 
         $essence->extract($input);
     }

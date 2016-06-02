@@ -16,9 +16,9 @@ use SplFileInfo;
 
 use PHPUnit_Framework_TestCase;
 
-use Impensavel\Essence\CSVEssence;
+use Impensavel\Essence\CSV;
 
-class CSVEssenceTest extends PHPUnit_Framework_TestCase
+class CSVTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Test input files to PASS (readability)
@@ -29,9 +29,9 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
     public function testInputFilesPass()
     {
         $files = array(
-            __DIR__.'/input/csv/macintosh.csv',
-            __DIR__.'/input/csv/unix.csv',
-            __DIR__.'/input/csv/windows.csv',
+            'mac' => __DIR__.'/input/csv/macintosh.csv',
+            'nix' => __DIR__.'/input/csv/unix.csv',
+            'win' => __DIR__.'/input/csv/windows.csv',
         );
 
         foreach ($files as $file) {
@@ -52,7 +52,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationFailMapMustBeArray()
     {
-        new CSVEssence(array(
+        new CSV(array(
             'map' => true,
         ));
     }
@@ -68,7 +68,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationFailDataHandlerNotSet()
     {
-        new CSVEssence(array(
+        new CSV(array(
             'map' => array(
                 'name'    => 0,
                 'surname' => 1,
@@ -87,7 +87,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationFailInvalidDataHandler()
     {
-        new CSVEssence(array(
+        new CSV(array(
             'map'     => array(
                 'name'    => 0,
                 'surname' => 1,
@@ -100,11 +100,11 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * Test instantiation to PASS
      *
      * @access  public
-     * @return  CSVEssence
+     * @return  CSV
      */
     public function testInstantiationPass()
     {
-        $essence = new CSVEssence(array(
+        $essence = new CSV(array(
             'map'     => array(
                 'name'    => 0,
                 'surname' => 1,
@@ -114,7 +114,7 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
             },
         ));
 
-        $this->assertInstanceOf('\Impensavel\Essence\CSVEssence', $essence);
+        $this->assertInstanceOf('\Impensavel\Essence\CSV', $essence);
 
         return $essence;
     }
@@ -127,10 +127,10 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Invalid input type: boolean
      *
      * @access  public
-     * @param   CSVEssence $essence
+     * @param   CSV    $essence
      * @return  void
      */
-    public function testExtractFailInvalidInputType(CSVEssence $essence)
+    public function testExtractFailInvalidInputType(CSV $essence)
     {
         $essence->extract(true);
     }
@@ -144,13 +144,13 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
      *
      * @access  public
-     * @param   CSVEssence $essence
-     * @param   array      $files
+     * @param   CSV    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractStringFailInvalidColumn(CSVEssence $essence, array $files)
+    public function testExtractStringFailInvalidColumn(CSV $essence, array $files)
     {
-        $input = file_get_contents(current($files));
+        $input = file_get_contents($files['mac']);
 
         $essence->extract($input);
     }
@@ -162,11 +162,11 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @depends testInputFilesPass
      *
      * @access  public
-     * @param   CSVEssence $essence
-     * @param   array      $files
+     * @param   CSV    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractStringPassNoExceptions(CSVEssence $essence, array $files)
+    public function testExtractStringPassNoExceptions(CSV $essence, array $files)
     {
         foreach ($files as $file) {
             $input = file_get_contents($file);
@@ -187,10 +187,10 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Could not open "invalid.csv" for parsing
      *
      * @access  public
-     * @param   CSVEssence $essence
+     * @param   CSV    $essence
      * @return  void
      */
-    public function testExtractSplFileInfoFailInvalidFile(CSVEssence $essence)
+    public function testExtractSplFileInfoFailInvalidFile(CSV $essence)
     {
         $input = new SplFileInfo('invalid.csv');
 
@@ -206,11 +206,11 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
      *
      * @access  public
-     * @param   CSVEssence $essence
-     * @param   array      $files
+     * @param   CSV    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractSplFileInfoFailInvalidColumn(CSVEssence $essence, array $files)
+    public function testExtractSplFileInfoFailInvalidColumn(CSV $essence, array $files)
     {
         $input = new SplFileInfo(current($files));
 
@@ -226,11 +226,11 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @depends testInputFilesPass
      *
      * @access  public
-     * @param   CSVEssence $essence
-     * @param   array      $files
+     * @param   CSV    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractSplFileInfoPassNoExceptions(CSVEssence $essence, array $files)
+    public function testExtractSplFileInfoPassNoExceptions(CSV $essence, array $files)
     {
         foreach ($files as $file) {
             $input = new SplFileInfo($file);
@@ -252,13 +252,13 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
      *
      * @access  public
-     * @param   CSVEssence $essence
-     * @param   array      $files
+     * @param   CSV    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractResourceFailInvalidColumn(CSVEssence $essence, array $files)
+    public function testExtractResourceFailInvalidColumn(CSV $essence, array $files)
     {
-        $input = fopen(current($files), 'r');
+        $input = fopen($files['mac'], 'r');
 
         $essence->extract($input);
     }
@@ -270,11 +270,11 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @depends testInputFilesPass
      *
      * @access  public
-     * @param   CSVEssence $essence
-     * @param   array      $files
+     * @param   CSV    $essence
+     * @param   array  $files
      * @return  void
      */
-    public function testExtractResourcePassNoExceptions(CSVEssence $essence, array $files)
+    public function testExtractResourcePassNoExceptions(CSV $essence, array $files)
     {
         foreach ($files as $file) {
             $input = fopen($file, 'r');
@@ -297,10 +297,10 @@ class CSVEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Invalid resource type: curl
      *
      * @access  public
-     * @param   CSVEssence $essence
+     * @param   CSV    $essence
      * @return  void
      */
-    public function testExtractResourceFailInvalidType(CSVEssence $essence)
+    public function testExtractResourceFailInvalidType(CSV $essence)
     {
         // create a resource of a type different than stream
         $input = curl_init();

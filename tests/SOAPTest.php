@@ -14,9 +14,9 @@ namespace Impensavel\Essence\Tests;
 
 use PHPUnit_Framework_TestCase;
 
-use Impensavel\Essence\SOAPEssence;
+use Impensavel\Essence\SOAP;
 
-class SOAPEssenceTest extends PHPUnit_Framework_TestCase
+class SOAPTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Test instantiation to FAIL (missing URI in nonWSDL)
@@ -29,7 +29,7 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
      */
     public function testInstantiationFailMapMustBeArray()
     {
-        new SOAPEssence(array(
+        new SOAP(array(
             '/Foo/Bar' => array(
                 'map'     => array(),
                 'handler' => function ($element, array $properties, &$data) {
@@ -43,7 +43,7 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
      * Test instantiation to PASS
      *
      * @access  public
-     * @return  SOAPEssence
+     * @return  SOAP
      */
     public function testInstantiationPass()
     {
@@ -65,9 +65,9 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
             'location' => 'bar',
         );
 
-        $essence = new SOAPEssence($elements, null, $namespaces, $options);
+        $essence = new SOAP($elements, null, $namespaces, $options);
 
-        $this->assertInstanceOf('\Impensavel\Essence\SOAPEssence', $essence);
+        $this->assertInstanceOf('\Impensavel\Essence\SOAP', $essence);
 
         return $essence;
     }
@@ -80,10 +80,10 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage The input must be an associative array
      *
      * @access  public
-     * @param   SOAPEssence $essence
+     * @param   SOAP   $essence
      * @return  void
      */
-    public function testExtractFailInvalidInput(SOAPEssence $essence)
+    public function testExtractFailInvalidInput(SOAP $essence)
     {
         $essence->extract(true);
     }
@@ -96,10 +96,10 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage The SOAP function is not set
      *
      * @access  public
-     * @param   SOAPEssence $essence
+     * @param   SOAP   $essence
      * @return  void
      */
-    public function testExtractFailFunctionNotSet(SOAPEssence $essence)
+    public function testExtractFailFunctionNotSet(SOAP $essence)
     {
         $essence->extract(array());
     }
@@ -111,10 +111,10 @@ class SOAPEssenceTest extends PHPUnit_Framework_TestCase
      * @expectedException \Impensavel\Essence\EssenceException
      *
      * @access  public
-     * @param   SOAPEssence $essence
+     * @param   SOAP   $essence
      * @return  void
      */
-    public function testExtractFailInvalidURL(SOAPEssence $essence)
+    public function testExtractFailInvalidURL(SOAP $essence)
     {
         $essence->extract(array(
             'function' => 'baz',

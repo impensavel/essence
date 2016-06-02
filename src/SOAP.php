@@ -15,7 +15,7 @@ namespace Impensavel\Essence;
 use SoapClient;
 use SoapFault;
 
-class SOAPEssence extends XMLEssence
+class SOAP extends XML
 {
     /**
      * SOAP Client object
@@ -50,7 +50,7 @@ class SOAPEssence extends XMLEssence
     protected $lastResponseHeaders = array();
 
     /**
-     * SOAP Essence constructor
+     * SOAP constructor
      *
      * @access  public
      * @param   array  $elements   Elements
@@ -58,7 +58,7 @@ class SOAPEssence extends XMLEssence
      * @param   array  $namespaces Namespaces
      * @param   array  $options    SOAP client options
      * @throws  EssenceException
-     * @return  SOAPEssence
+     * @return  SOAP
      */
     public function __construct(array $elements, $wsdl = null, array $namespaces = array(), array $options = array())
     {

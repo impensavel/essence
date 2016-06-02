@@ -16,15 +16,15 @@ use RuntimeException;
 use SplFileInfo;
 use SplFileObject;
 
-class CSVEssence extends AbstractEssence
+class CSV extends AbstractEssence
 {
     /**
-     * CSV Essence constructor
+     * CSV constructor
      *
      * @access  public
      * @param   array  $element Element
      * @throws  EssenceException
-     * @return  CSVEssence
+     * @return  CSV
      */
     public function __construct(array $element)
     {
@@ -40,7 +40,7 @@ class CSVEssence extends AbstractEssence
      * @throws  EssenceException
      * @return  array|SplFileObject
      */
-    protected function provision($input, array $config)
+    protected function prepare($input, array $config)
     {
         if ($input instanceof SplFileInfo) {
             try {
@@ -83,7 +83,7 @@ class CSVEssence extends AbstractEssence
                 throw new EssenceException('Failed to read input from stream');
             }
 
-            return $this->provision($string, $config);
+            return $this->prepare($string, $config);
         }
 
         throw new EssenceException('Invalid input type: '.gettype($input));
@@ -103,7 +103,7 @@ class CSVEssence extends AbstractEssence
             'auto_eol'   => false, // auto detect end of lines
         ), $config);
 
-        $elements = $this->provision($input, $config);
+        $elements = $this->prepare($input, $config);
 
         foreach ($elements as $line => $element) {
 

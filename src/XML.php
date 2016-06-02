@@ -22,7 +22,7 @@ use LibXMLError;
 use SplFileInfo;
 use XMLReader;
 
-class XMLEssence extends AbstractEssence
+class XML extends AbstractEssence
 {
     /**
      * XML Reader object
@@ -81,13 +81,13 @@ class XMLEssence extends AbstractEssence
     protected $skip;
 
     /**
-     * XML Essence constructor
+     * XML constructor
      *
      * @access  public
      * @param   array  $elements   Elements
      * @param   array  $namespaces Namespaces
      * @throws  EssenceException
-     * @return  XMLEssence
+     * @return  XML
      */
     public function __construct(array $elements, array $namespaces = array())
     {
@@ -220,7 +220,7 @@ class XMLEssence extends AbstractEssence
      * @throws  EssenceException
      * @return  void
      */
-    protected function provision($input, array $config)
+    protected function prepare($input, array $config)
     {
         if ($input instanceof SplFileInfo) {
             if (@$this->reader->open($input->getPathname(), $config['encoding'], $config['options'])) {
@@ -251,7 +251,7 @@ class XMLEssence extends AbstractEssence
                 throw new EssenceException('Failed to read input from stream');
             }
 
-            $this->provision($string, $config);
+            $this->prepare($string, $config);
 
             return;
         }
@@ -378,7 +378,7 @@ class XMLEssence extends AbstractEssence
             'options'  => LIBXML_PARSEHUGE,
         ), $config);
 
-        $this->provision($input, $config);
+        $this->prepare($input, $config);
 
         while ($this->nextElement()) {
             if (! $this->reader->isEmptyElement && $this->reader->nodeType === XMLReader::ELEMENT && $this->isMapped($this->current)) {

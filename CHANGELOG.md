@@ -1,6 +1,7 @@
 ## 3.0.0 - 2016-06-03
 ### Added
 - Implemented the `dump()` method in the XML class
+
 ### Changed
 - Rename some classes
 - [XML] All constructor arguments are now optional

@@ -1,3 +1,12 @@
+## 3.0.0 - 2016-06-03
+### Added
+- Implemented the `dump()` method in the XML class
+### Changed
+- Rename some classes
+- [XML] All constructor arguments are now optional
+- [CSV|XML]Rename protected `provision()` method to `prepare()`
+- [SOAP] Keep last request/response before throwing an exception
+
 ## 2.1.2 - 2015-09-07
 ### Added
 - fabpot/php-cs-fixer dev dependency
@@ -16,7 +25,7 @@
 - `DOMNodeListToArray()` doesn't return node attributes by default anymore
 
 ### Fixed
-- A `DOMText` should only be skipped when it contains whitespace
+- A `DOMText` should only be skipped when containing whitespace
 
 ## 2.1.0 - 2015-08-31
 ### Added

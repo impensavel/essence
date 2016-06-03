@@ -446,7 +446,7 @@ class XML extends AbstractEssence
 
         $this->prepare($input, $config);
 
-        $paths = [];
+        $paths = array();
 
         while ($this->nextElement()) {
             if (! $this->reader->isEmptyElement && $this->reader->nodeType === XMLReader::ELEMENT) {

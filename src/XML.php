@@ -99,12 +99,12 @@ class XML extends AbstractEssence
         $this->doc = new DOMDocument();
         $this->element = new DOMXPath($this->doc);
 
-        // register namespaces
+        // Register namespaces
         foreach ($namespaces as $prefix => $uri) {
             $this->element->registerNamespace($prefix, $uri);
         }
 
-        // manually handle libXML errors
+        // Handle libXML errors manually
         libxml_use_internal_errors(true);
     }
 
@@ -128,7 +128,7 @@ class XML extends AbstractEssence
      */
     protected function getCurrentNode()
     {
-        // clear the libXML error buffer
+        // Clear the libXML error buffer
         libxml_clear_errors();
 
         $node = @$this->reader->expand();
@@ -136,7 +136,7 @@ class XML extends AbstractEssence
         $error = libxml_get_last_error();
 
         if ($error instanceof LibXMLError) {
-            // only throw exceptions when level is ERROR or FATAL
+            // Only throw exceptions when the level is ERROR or FATAL
             if ($error->level > LIBXML_ERR_WARNING) {
                 throw new EssenceException(sprintf('%s @ line #%d [%s]', trim($error->message), $error->line, $this->current), $error->code);
             }
@@ -162,18 +162,18 @@ class XML extends AbstractEssence
                 return false;
             }
 
-            // pop previous levels from the stack
+            // Pop previous levels from the stack
             $this->stack = array_slice($this->stack, 0, $this->reader->depth, true);
 
-            // push the current Element to the stack
+            // Push the current Element to the stack
             $this->stack[] = $this->reader->name;
 
-            // update the current Element XPath
+            // Update the current Element XPath
             $this->current = implode('/', $this->stack);
 
-            // skip to Element
+            // Set skip to
             $this->skip = ($this->skip == $this->current) ? null : $this->skip;
-        } while ($this->skip !== null);
+        } while ($this->skip);
 
         return true;
     }
@@ -313,7 +313,7 @@ class XML extends AbstractEssence
      */
     protected static function DOMNodeValue(DOMNode $node, $associative = false, $attributes = false)
     {
-        // return the value immediately when we're dealing with a leaf
+        // Return the value immediately when we're dealing with a leaf
         // node without attributes or we simply don't want them included
         if (static::DOMNodeChildCount($node) == 0 && ($node->hasAttributes() === false || $attributes === false)) {
             return $node->nodeValue;
@@ -326,7 +326,7 @@ class XML extends AbstractEssence
         }
 
         foreach ($node->childNodes as $child) {
-            // skip whitespace text nodes
+            // Skip text nodes containing whitespace
             if ($child instanceof DOMText && $child->isWhitespaceInElementContent()) {
                 continue;
             }
@@ -384,17 +384,17 @@ class XML extends AbstractEssence
             if (! $this->reader->isEmptyElement && $this->reader->nodeType === XMLReader::ELEMENT && $this->isMapped($this->current)) {
                 $node = $this->getCurrentNode();
 
-                // current element properties
+                // Current element properties
                 $properties = array();
 
                 foreach ($this->maps[$this->current] as $key => $xpath) {
                     $xpath = trim($xpath);
 
-                    // get registered Element data
+                    // Get registered Element data
                     if (strpos($xpath, '#') === 0) {
                         $properties[$key] = $this->getData(substr($xpath, 1));
 
-                    // get evaluated XPath data
+                    // Get evaluated XPath data
                     } else {
                         $properties[$key] = $this->element->evaluate($xpath, $node);
 
@@ -404,7 +404,7 @@ class XML extends AbstractEssence
                     }
                 }
 
-                // execute element data handler
+                // Execute element data handler
                 $arguments = array(
                     '/'.$this->current,
                     $properties,
@@ -414,11 +414,11 @@ class XML extends AbstractEssence
                 $result = call_user_func_array($this->handlers[$this->current], $arguments);
 
                 if ($result) {
-                    // skip to Element
+                    // Skip to Element
                     if ($this->isMapped($result)) {
                         $this->skip = $result;
 
-                    // store Element data
+                    // Store Element data
                     } else {
                         $this->data[$this->current] = $result;
                     }

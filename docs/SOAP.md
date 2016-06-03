@@ -52,7 +52,7 @@ try
     $essence->extract($input);
 
 } catch (EssenceException $e) {
-    // handle exceptions
+    // Handle exceptions
 }
 ```
 

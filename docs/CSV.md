@@ -27,7 +27,7 @@ Besides the map, a data handler must be set. It should be of the type `Closure`,
  * @param mixed $data       User data
  */
 $handler = function ($element, array $properties, &$data) {
-    // implementation
+    // Implementation
 );
 ```
 >**TIP:** User data will be passed by reference
@@ -58,7 +58,7 @@ try {
     $essence->extract(new SplFileInfo('input.csv'));
 
 } catch (EssenceException $e) {
-    // handle exceptions
+    // Handle exceptions
 }
 ```
 

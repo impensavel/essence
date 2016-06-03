@@ -82,7 +82,7 @@ The data handler should be of the type `Closure` and have the following signatur
  * @param mixed  $data       User data
  */
 $handler = function ($element, array $properties, &$data) {
-    // implementation
+    // Implementation
 );
 ```
 >**TIP:** User data will be passed by reference
@@ -126,7 +126,7 @@ try
     $essence->extract(new SplFileInfo('input.xml'));
 
 } catch (EssenceException $e) {
-    // handle exceptions
+    // Handle exceptions
 }
 ```
 
@@ -223,12 +223,12 @@ $config = array(
             'email'   => 'string(Email)',
         ),
         'handler' => function ($element, array $properties, &$data) {
-            // skip to the next /Persons/Person element if the email is invalid
+            // Skip to the next /Persons/Person element if the email is invalid
             if (filter_var($properties['email'], FILTER_VALIDATE_EMAIL) === false) {
                 return '/Persons/Person';
             }
             
-            // do something with the data, otherwise
+            // Do something with the data, otherwise
         },
     ),
     '/Persons/Person/Addresses/Address' => array(
@@ -238,7 +238,7 @@ $config = array(
             'postcode' => 'string(Postcode)',
         ),
         'handler' => function ($element, array $properties, &$data) {
-            // do something with the data
+            // Do something with the data
         },
     ),
 );
@@ -258,16 +258,16 @@ $config = array(
             'email'   => 'string(Email)',
         ),
         'handler' => function ($element, array $properties, &$data) {
-            // store data using a Laravel Person model
+            // Store data using a Laravel Person model
             $person = Person::create($properties);
             
-            // return the last inserted id
+            // Return the last inserted id
             return $person->id;
         },
     ),
     '/Persons/Person/Addresses/Address' => array(
         'map'     => array(
-            // use the last inserted Person id set from 
+            // Use the last inserted Person id set from 
             // the other handler to make the relation
             'person_id' => '#/Persons/Person',
             'type'      => 'string(@Type)',
@@ -275,7 +275,7 @@ $config = array(
             'postcode'  => 'string(Postcode)',
         ),
         'handler' => function ($element, array $properties, &$data) {
-            // store data using a Laravel Address model
+            // Store data using a Laravel Address model
             Address::create($properties);
         },
     ),
@@ -317,7 +317,7 @@ $config = array(
             'name' => 'string(Name)',
         ),
 
-        // data handler
+        // Data handler
     ),
 );
 ```
@@ -350,10 +350,10 @@ $config = array(
             'addresses' => 'Addresses',
         ),
         'handler' => function ($element, array $properties, &$data) {
-            // return an associative array
+            // Return an associative array
             $associative = false;
             
-            // include node attributes
+            // Include node attributes
             $attributes = true;
 
             foreach ($properties as $name => $value) {
@@ -374,7 +374,7 @@ try
     $essence->extract(new SplFileInfo('input.xml'));
 
 } catch (EssenceException $e) {
-    // handle exceptions
+    // Handle exceptions
 }
 ```
 

@@ -99,20 +99,19 @@ class CSV extends AbstractEssence
             'enclosure'  => '"',
             'escape'     => '\\',
             'start_line' => 0,
-            'exceptions' => true,  // throw exception on invalid columns
-            'auto_eol'   => false, // auto detect end of lines
+            'exceptions' => true,  // Throw exception on invalid columns
+            'auto_eol'   => false, // Auto detect end of lines
         ), $config);
 
         $elements = $this->prepare($input, $config);
 
         foreach ($elements as $line => $element) {
-
-            // skip until we reach the starting line
+            // Skip until we reach the starting line
             if ($line < $config['start_line']) {
                 continue;
             }
 
-            // current element properties
+            // Current element properties
             $properties = array();
 
             foreach ($this->maps['default'] as $key => $column) {
@@ -122,13 +121,13 @@ class CSV extends AbstractEssence
                     continue;
                 }
 
-                // halt extraction on invalid column
+                // Halt extraction on invalid column
                 if ($config['exceptions']) {
                     throw new EssenceException('Invalid column '.$column.' @ line '.$line.' for property "'.$key.'"');
                 }
             }
 
-            // execute element data handler
+            // Execute element data handler
             $arguments = array(
                 $line,
                 $properties,

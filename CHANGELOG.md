@@ -1,3 +1,7 @@
+## 2.1.3 - 2016-06-03
+### Changed
+- [SOAP] Keep last request/response before throwing an exception
+
 ## 2.1.2 - 2015-09-07
 ### Added
 - fabpot/php-cs-fixer dev dependency
@@ -16,7 +20,7 @@
 - `DOMNodeListToArray()` doesn't return node attributes by default anymore
 
 ### Fixed
-- A `DOMText` should only be skipped when it contains whitespace
+- A `DOMText` should only be skipped when containing whitespace
 
 ## 2.1.0 - 2015-08-31
 ### Added

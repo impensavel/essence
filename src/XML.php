@@ -89,7 +89,7 @@ class XML extends AbstractEssence
      * @throws  EssenceException
      * @return  XML
      */
-    public function __construct(array $elements, array $namespaces = array())
+    public function __construct(array $elements = array(), array $namespaces = array())
     {
         foreach ($elements as $key => $element) {
             $this->register($element, trim($key, '/'));
@@ -427,5 +427,33 @@ class XML extends AbstractEssence
         }
 
         return true;
+    }
+
+    /**
+     * Dump XPaths and all their occurrences
+     *
+     * @access  public
+     * @param   mixed  $input  Input data
+     * @param   array  $config Configuration settings (optional)
+     * @return  array
+     */
+    public function dump($input, array $config = array())
+    {
+        $config = array_replace_recursive(array(
+            'encoding' => 'UTF-8',
+            'options'  => LIBXML_PARSEHUGE,
+        ), $config);
+
+        $this->prepare($input, $config);
+
+        $paths = [];
+
+        while ($this->nextElement()) {
+            if (! $this->reader->isEmptyElement && $this->reader->nodeType === XMLReader::ELEMENT) {
+                $paths[] = $this->current;
+            }
+        }
+
+        return array_count_values($paths);
     }
 }

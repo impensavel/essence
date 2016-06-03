@@ -324,6 +324,55 @@ $config = array(
 
 Values should be cast to a type when mapping element properties, unless there's a reason to work with a `DOMNodeList`, instead.
 
+#### XPath dump
+The `dump()` method was added in version `3.0.0`, to make things a bit easier when mapping.
+This method returns an array with all the XPaths and occurrence count of an XML input.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+use Impensavel\Essence\EssenceException;
+use Impensavel\Essence\XML;
+
+try
+{
+    $essence = new XML();
+
+    $paths = $essence->dump(new SplFileInfo('input.xml'));
+
+    var_dump($paths);
+
+} catch (EssenceException $e) {
+    // Handle exceptions
+}
+```
+
+Using the code above to dump the example XML data, we get the following output:
+```php
+array(9) {
+  ["Persons"]=>
+  int(1)
+  ["Persons/Person"]=>
+  int(3)
+  ["Persons/Person/Name"]=>
+  int(3)
+  ["Persons/Person/Surname"]=>
+  int(3)
+  ["Persons/Person/Email"]=>
+  int(3)
+  ["Persons/Person/Addresses"]=>
+  int(3)
+  ["Persons/Person/Addresses/Address"]=>
+  int(5)
+  ["Persons/Person/Addresses/Address/Name"]=>
+  int(5)
+  ["Persons/Person/Addresses/Address/Postcode"]=>
+  int(5)
+}
+```
+
 ### DOMNodeLists
 Sometimes it may be easier to have a `DOMNodeList` and work with it, instead of having to set a new element map and data handler.
 Since version `2.1.0`, a helper method has been added to convert `DOMNodeList` objects into `array` types.

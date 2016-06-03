@@ -273,4 +273,42 @@ class XMLTest extends PHPUnit_Framework_TestCase
 
         $essence->extract($input);
     }
+
+    /**
+     * Test dump() method to PASS
+     *
+     * @depends testInstantiationPass
+     * @depends testInputFilesPass
+     *
+     * @access  public
+     * @param   XML    $essence
+     * @param   array  $files
+     * @return  void
+     */
+    public function testDumpPass(XML $essence, array $files)
+    {
+        $input = new SplFileInfo($files['valid']);
+
+        $paths = $essence->dump($input);
+
+        // XPaths
+        $this->assertArrayHasKey('Persons', $paths);
+        $this->assertArrayHasKey('Persons/Person', $paths);
+        $this->assertArrayHasKey('Persons/Person/Surname', $paths);
+        $this->assertArrayHasKey('Persons/Person/Email', $paths);
+        $this->assertArrayHasKey('Persons/Person/Addresses', $paths);
+        $this->assertArrayHasKey('Persons/Person/Addresses/Address', $paths);
+        $this->assertArrayHasKey('Persons/Person/Addresses/Address/Name', $paths);
+        $this->assertArrayHasKey('Persons/Person/Addresses/Address/Postcode', $paths);
+
+        // Element count
+        $this->assertEquals(1, $paths['Persons']);
+        $this->assertEquals(3, $paths['Persons/Person']);
+        $this->assertEquals(3, $paths['Persons/Person/Surname']);
+        $this->assertEquals(3, $paths['Persons/Person/Email']);
+        $this->assertEquals(3, $paths['Persons/Person/Addresses']);
+        $this->assertEquals(5, $paths['Persons/Person/Addresses/Address']);
+        $this->assertEquals(5, $paths['Persons/Person/Addresses/Address/Name']);
+        $this->assertEquals(5, $paths['Persons/Person/Addresses/Address/Postcode']);
+    }
 }

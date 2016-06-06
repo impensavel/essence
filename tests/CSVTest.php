@@ -212,7 +212,7 @@ class CSVTest extends PHPUnit_Framework_TestCase
      */
     public function testExtractSplFileInfoFailInvalidColumn(CSV $essence, array $files)
     {
-        $input = new SplFileInfo(current($files));
+        $input = new SplFileInfo($files['mac']);
 
         $essence->extract($input, array(
             'auto_eol' => true, // Detect EOL from macintosh.csv

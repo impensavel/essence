@@ -215,7 +215,7 @@ class CSVTest extends PHPUnit_Framework_TestCase
         $input = new SplFileInfo(current($files));
 
         $essence->extract($input, array(
-            'auto_eol' => true, // detect EOL from macintosh.csv
+            'auto_eol' => true, // Detect EOL from macintosh.csv
         ));
     }
 
@@ -302,7 +302,7 @@ class CSVTest extends PHPUnit_Framework_TestCase
      */
     public function testExtractResourceFailInvalidType(CSV $essence)
     {
-        // create a resource of a type different than stream
+        // Create a resource of a type other than stream
         $input = curl_init();
 
         $essence->extract($input);

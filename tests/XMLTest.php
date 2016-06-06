@@ -119,7 +119,7 @@ class XMLTest extends PHPUnit_Framework_TestCase
                     'email'   => 'string(Email)',
                 ),
                 'handler' => function () {
-                    // simulate a last inserted id
+                    // Simulate a last inserted id
                     return rand(1, 100);
                 },
             ),
@@ -248,7 +248,7 @@ class XMLTest extends PHPUnit_Framework_TestCase
      */
     public function testExtractResourceFailInvalidType(XML $essence)
     {
-        // create a resource of a type different than stream
+        // Create a resource of a type other than stream
         $input = curl_init();
 
         $essence->extract($input);

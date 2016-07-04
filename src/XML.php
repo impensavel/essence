@@ -231,7 +231,7 @@ class XML extends AbstractEssence
         }
 
         if (is_string($input)) {
-            if ($this->reader->XML($input, $config['encoding'], $config['options'])) {
+            if (@$this->reader->XML($input, $config['encoding'], $config['options'])) {
                 return;
             }
 

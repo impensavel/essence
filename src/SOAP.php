@@ -110,14 +110,15 @@ class SOAP extends XML
     }
 
     /**
-     * {@inheritdoc}
+     * Make SOAP call
+     *
+     * @access  public
+     * @param   array     $input Input data
+     * @throws  EssenceException
+     * @return  string
      */
-    public function extract($input, array $config = array(), &$data = null)
+    public function makeCall(array $input)
     {
-        if (! is_array($input)) {
-            throw new EssenceException('The input must be an associative array');
-        }
-
         $input = array_replace_recursive(array(
             'function' => null,
         ), $input, array(
@@ -142,12 +143,40 @@ class SOAP extends XML
             $this->lastRequest = $this->client->__getLastRequest();
             $this->lastResponse = $this->client->__getLastResponse();
 
-            return parent::extract($this->lastResponse, $config, $data);
+            return $this->lastResponse;
         } catch (SoapFault $e) {
             $this->lastRequest = $this->client->__getLastRequest();
             $this->lastResponse = $this->client->__getLastResponse();
 
             throw new EssenceException($e->getMessage(), $e->getCode(), $e);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function extract($input, array $config = array(), &$data = null)
+    {
+        if (! is_array($input)) {
+            throw new EssenceException('The input must be an associative array');
+        }
+
+        $response = $this->makeCall($input);
+
+        return parent::extract($response, $config, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dump($input, array $config = array())
+    {
+        if (! is_array($input)) {
+            throw new EssenceException('The input must be an associative array');
+        }
+
+        $response = $this->makeCall($input);
+
+        return parent::dump($response, $config);
     }
 }

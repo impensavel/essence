@@ -12,12 +12,32 @@
 
 namespace Impensavel\Essence\Tests;
 
+use Mockery;
 use PHPUnit_Framework_TestCase;
 
 use Impensavel\Essence\SOAP;
 
 class SOAPTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Test input file to PASS (readability)
+     *
+     * @access  public
+     * @return  array
+     */
+    public function testInputFilesPass()
+    {
+        $files = array(
+            'response' => __DIR__.'/input/soap/response.xml',
+        );
+
+        foreach ($files as $file) {
+            $this->assertTrue(is_readable($file));
+        }
+
+        return $files;
+    }
+
     /**
      * Test instantiation to FAIL (missing URI in nonWSDL)
      *
@@ -40,12 +60,12 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation to PASS
+     * Test instantiation (original) to PASS
      *
      * @access  public
      * @return  SOAP
      */
-    public function testInstantiationPass()
+    public function testInstantiationOriginalPass()
     {
         $elements = array(
             '/Foo/Bar' => array(
@@ -73,9 +93,51 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test instantiation (mocked) to PASS
+     *
+     * @depends testInputFilesPass
+     *
+     * @access  public
+     * @param   array  $files
+     * @return  SOAP
+     */
+    public function testInstantiationMockPass(array $files)
+    {
+        $elements = array(
+            '/soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName' => array(
+                'map'     => array(
+                    'code' => 'string(m:sISOCode)',
+                    'name' => 'string(m:sName)',
+                ),
+                'handler' => function ($element, array $properties, &$data) {
+                    $data[] = $properties;
+                },
+            ),
+        );
+
+        $namespaces = array(
+            'm' => 'http://www.oorsprong.org/websamples.countryinfo',
+        );
+
+        $response = file_get_contents($files['response']);
+
+        $essence = Mockery::mock('\Impensavel\Essence\SOAP[makeCall]', array(
+            $elements,
+            'http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL',
+            $namespaces
+        ));
+
+        $essence->shouldReceive('makeCall')->twice()->andReturn($response);
+
+        $this->assertInstanceOf('\Impensavel\Essence\SOAP', $essence);
+
+        return $essence;
+    }
+
+    /**
      * Test extract() method to FAIL (invalid input)
      *
-     * @depends                  testInstantiationPass
+     * @depends                  testInstantiationOriginalPass
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage The input must be an associative array
      *
@@ -91,7 +153,7 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     /**
      * Test extract() method to FAIL (function not set)
      *
-     * @depends                  testInstantiationPass
+     * @depends                  testInstantiationOriginalPass
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage The SOAP function is not set
      *
@@ -107,7 +169,7 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     /**
      * Test extract() method to FAIL (invalid WSDL)
      *
-     * @depends           testInstantiationPass
+     * @depends           testInstantiationOriginalPass
      * @expectedException \Impensavel\Essence\EssenceException
      *
      * @access  public
@@ -119,5 +181,61 @@ class SOAPTest extends PHPUnit_Framework_TestCase
         $essence->extract(array(
             'function' => 'baz',
         ));
+    }
+
+    /**
+     * Test extract() method to PASS
+     *
+     * @depends testInstantiationMockPass
+     *
+     * @param   SOAP $essence
+     * @return  void
+     */
+    public function testExtractPass(SOAP $essence)
+    {
+        $countries = array();
+
+        $input = array(
+            'function' => 'ListOfCountryNamesByCode',
+        );
+
+        $essence->extract($input, array(), $countries);
+
+        $this->assertCount(240, $countries);
+    }
+
+    /**
+     * Test dump() method to PASS
+     *
+     * @depends testInstantiationMockPass
+     *
+     * @param   SOAP $essence
+     * @return  void
+     */
+    public function testDumpPass(SOAP $essence)
+    {
+        $input = array(
+            'function' => 'ListOfCountryNamesByCode',
+        );
+
+        $paths = $essence->dump($input);
+
+        // XPaths
+        $this->assertArrayHasKey('soap:Envelope', $paths);
+        $this->assertArrayHasKey('soap:Envelope/soap:Body', $paths);
+        $this->assertArrayHasKey('soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse', $paths);
+        $this->assertArrayHasKey('soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult', $paths);
+        $this->assertArrayHasKey('soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName', $paths);
+        $this->assertArrayHasKey('soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName/m:sISOCode', $paths);
+        $this->assertArrayHasKey('soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName/m:sName', $paths);
+
+        // Element count
+        $this->assertEquals(1, $paths['soap:Envelope']);
+        $this->assertEquals(1, $paths['soap:Envelope/soap:Body']);
+        $this->assertEquals(1, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse']);
+        $this->assertEquals(1, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult']);
+        $this->assertEquals(240, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName']);
+        $this->assertEquals(240, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName/m:sISOCode']);
+        $this->assertEquals(240, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName/m:sName']);
     }
 }

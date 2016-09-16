@@ -153,3 +153,52 @@ Example output:
 array(0) {
 }
 ```
+
+#### XPath dump
+This method returns an array with all the XPaths and occurrence count of a SOAP response.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+use Impensavel\Essence\EssenceException;
+use Impensavel\Essence\SOAP;
+
+// Web Service Definition Language
+$wsdl = 'http://www.webservicex.net/CurrencyConvertor.asmx?WSDL';
+
+try
+{
+    $essence = new SOAP(array(), $wsdl);
+
+    $input = array(
+        'function'  => 'ConversionRate',
+        'arguments' => array(
+            'FromCurrency' => 'GBP',
+            'ToCurrency'   => 'EUR',
+        ),
+    );
+
+    $paths = $essence->dump($input);
+    
+    var_dump($paths);
+
+} catch (EssenceException $e) {
+    // Handle exceptions
+}
+```
+
+The code above will provide the following output:
+```php
+array(4) {
+  ["soap:Envelope"]=>
+  int(1)
+  ["soap:Envelope/soap:Body"]=>
+  int(1)
+  ["soap:Envelope/soap:Body/ConversionRateResponse"]=>
+  int(1)
+  ["soap:Envelope/soap:Body/ConversionRateResponse/ConversionRateResult"]=>
+  int(1)
+}
+```

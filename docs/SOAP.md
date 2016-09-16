@@ -154,7 +154,7 @@ array(0) {
 }
 ```
 
-#### XPath dump
+### XPath dump
 This method returns an array with all the XPaths and occurrence count of a SOAP response.
 
 ```php

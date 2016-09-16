@@ -58,7 +58,6 @@ class SOAP extends XML
      * @param   array  $namespaces Namespaces
      * @param   array  $options    SOAP client options
      * @throws  EssenceException
-     * @return  SOAP
      */
     public function __construct(array $elements, $wsdl = null, array $namespaces = array(), array $options = array())
     {

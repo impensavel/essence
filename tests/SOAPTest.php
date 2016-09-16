@@ -22,7 +22,6 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     /**
      * Test input file to PASS (readability)
      *
-     * @access  public
      * @return  array
      */
     public function testInputFilesPass()
@@ -44,7 +43,6 @@ class SOAPTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage SOAP client could not be instantiated
      *
-     * @access  public
      * @return  void
      */
     public function testInstantiationFailMapMustBeArray()
@@ -62,7 +60,6 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     /**
      * Test instantiation (original) to PASS
      *
-     * @access  public
      * @return  SOAP
      */
     public function testInstantiationOriginalPass()
@@ -97,8 +94,7 @@ class SOAPTest extends PHPUnit_Framework_TestCase
      *
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   array  $files
+     * @param   array $files
      * @return  SOAP
      */
     public function testInstantiationMockPass(array $files)
@@ -141,8 +137,7 @@ class SOAPTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage The input must be an associative array
      *
-     * @access  public
-     * @param   SOAP   $essence
+     * @param   SOAP $essence
      * @return  void
      */
     public function testExtractFailInvalidInput(SOAP $essence)
@@ -157,8 +152,7 @@ class SOAPTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage The SOAP function is not set
      *
-     * @access  public
-     * @param   SOAP   $essence
+     * @param   SOAP $essence
      * @return  void
      */
     public function testExtractFailFunctionNotSet(SOAP $essence)
@@ -172,8 +166,7 @@ class SOAPTest extends PHPUnit_Framework_TestCase
      * @depends           testInstantiationOriginalPass
      * @expectedException \Impensavel\Essence\EssenceException
      *
-     * @access  public
-     * @param   SOAP   $essence
+     * @param   SOAP $essence
      * @return  void
      */
     public function testExtractFailInvalidURL(SOAP $essence)

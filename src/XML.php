@@ -87,7 +87,6 @@ class XML extends AbstractEssence
      * @param   array  $elements   Elements
      * @param   array  $namespaces Namespaces
      * @throws  EssenceException
-     * @return  XML
      */
     public function __construct(array $elements = array(), array $namespaces = array())
     {

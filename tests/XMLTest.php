@@ -23,7 +23,6 @@ class XMLTest extends PHPUnit_Framework_TestCase
     /**
      * Test input file to PASS (readability)
      *
-     * @access  public
      * @return  array
      */
     public function testInputFilesPass()
@@ -46,7 +45,6 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage [Persons/Person] Element property map must be an array
      *
-     * @access  public
      * @return  void
      */
     public function testInstantiationFailMapMustBeArray()
@@ -64,7 +62,6 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage [Persons/Person] Element data handler is not set
      *
-     * @access  public
      * @return  void
      */
     public function testInstantiationFailDataHandlerNotSet()
@@ -86,7 +83,6 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage [Persons/Person] Element data handler must be a Closure
      *
-     * @access  public
      * @return  void
      */
     public function testInstantiationFailInvalidDataHandler()
@@ -106,7 +102,6 @@ class XMLTest extends PHPUnit_Framework_TestCase
     /**
      * Test instantiation to PASS
      *
-     * @access  public
      * @return  XML
      */
     public function testInstantiationPass()
@@ -148,8 +143,7 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid input type: boolean
      *
-     * @access  public
-     * @param   XML    $essence
+     * @param   XML $essence
      * @return  void
      */
     public function testExtractFailInvalidInputType(XML $essence)
@@ -164,8 +158,7 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Could not open "invalid.xml" for parsing
      *
-     * @access  public
-     * @param   XML    $essence
+     * @param   XML $essence
      * @return  void
      */
     public function testExtractSplFileInfoFailInvalidFile(XML $essence)
@@ -181,9 +174,8 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @depends testInstantiationPass
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   XML    $essence
-     * @param   array  $files
+     * @param   XML   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractStringPass(XML $essence, array $files)
@@ -201,9 +193,8 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @depends testInstantiationPass
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   XML    $essence
-     * @param   array  $files
+     * @param   XML   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractSplFileInfoPass(XML $essence, array $files)
@@ -221,9 +212,8 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @depends testInstantiationPass
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   XML    $essence
-     * @param   array  $files
+     * @param   XML   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractResourcePass(XML $essence, array $files)
@@ -242,8 +232,7 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid resource type: curl
      *
-     * @access  public
-     * @param   XML    $essence
+     * @param   XML $essence
      * @return  void
      */
     public function testExtractResourceFailInvalidType(XML $essence)
@@ -262,9 +251,8 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage xmlParseEntityRef: no name @ line #9 [Persons/Person]
      *
-     * @access  public
-     * @param   XML    $essence
-     * @param   array  $files
+     * @param   XML   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractFailInvalidXML(XML $essence, array $files)
@@ -280,9 +268,8 @@ class XMLTest extends PHPUnit_Framework_TestCase
      * @depends testInstantiationPass
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   XML    $essence
-     * @param   array  $files
+     * @param   XML   $essence
+     * @param   array $files
      * @return  void
      */
     public function testDumpPass(XML $essence, array $files)

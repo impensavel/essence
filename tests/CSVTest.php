@@ -23,7 +23,6 @@ class CSVTest extends PHPUnit_Framework_TestCase
     /**
      * Test input files to PASS (readability)
      *
-     * @access  public
      * @return  array
      */
     public function testInputFilesPass()
@@ -47,7 +46,6 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage [default] Element property map must be an array
      *
-     * @access  public
      * @return  void
      */
     public function testInstantiationFailMapMustBeArray()
@@ -63,7 +61,6 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage [default] Element data handler is not set
      *
-     * @access  public
      * @return  void
      */
     public function testInstantiationFailDataHandlerNotSet()
@@ -82,7 +79,6 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage [default] Element data handler must be a Closure
      *
-     * @access  public
      * @return  void
      */
     public function testInstantiationFailInvalidDataHandler()
@@ -99,7 +95,6 @@ class CSVTest extends PHPUnit_Framework_TestCase
     /**
      * Test instantiation to PASS
      *
-     * @access  public
      * @return  CSV
      */
     public function testInstantiationPass()
@@ -126,8 +121,7 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid input type: boolean
      *
-     * @access  public
-     * @param   CSV    $essence
+     * @param   CSV $essence
      * @return  void
      */
     public function testExtractFailInvalidInputType(CSV $essence)
@@ -143,9 +137,8 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
      *
-     * @access  public
-     * @param   CSV    $essence
-     * @param   array  $files
+     * @param   CSV   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractStringFailInvalidColumn(CSV $essence, array $files)
@@ -161,9 +154,8 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @depends testInstantiationPass
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   CSV    $essence
-     * @param   array  $files
+     * @param   CSV   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractStringPassNoExceptions(CSV $essence, array $files)
@@ -186,8 +178,7 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Could not open "invalid.csv" for parsing
      *
-     * @access  public
-     * @param   CSV    $essence
+     * @param   CSV $essence
      * @return  void
      */
     public function testExtractSplFileInfoFailInvalidFile(CSV $essence)
@@ -205,9 +196,8 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
      *
-     * @access  public
-     * @param   CSV    $essence
-     * @param   array  $files
+     * @param   CSV   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractSplFileInfoFailInvalidColumn(CSV $essence, array $files)
@@ -225,9 +215,8 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @depends testInstantiationPass
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   CSV    $essence
-     * @param   array  $files
+     * @param   CSV   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractSplFileInfoPassNoExceptions(CSV $essence, array $files)
@@ -251,9 +240,8 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid column 1 @ line 3 for property "surname"
      *
-     * @access  public
-     * @param   CSV    $essence
-     * @param   array  $files
+     * @param   CSV   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractResourceFailInvalidColumn(CSV $essence, array $files)
@@ -269,9 +257,8 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @depends testInstantiationPass
      * @depends testInputFilesPass
      *
-     * @access  public
-     * @param   CSV    $essence
-     * @param   array  $files
+     * @param   CSV   $essence
+     * @param   array $files
      * @return  void
      */
     public function testExtractResourcePassNoExceptions(CSV $essence, array $files)
@@ -296,8 +283,7 @@ class CSVTest extends PHPUnit_Framework_TestCase
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage Invalid resource type: curl
      *
-     * @access  public
-     * @param   CSV    $essence
+     * @param   CSV $essence
      * @return  void
      */
     public function testExtractResourceFailInvalidType(CSV $essence)

@@ -24,7 +24,6 @@ class CSV extends AbstractEssence
      * @access  public
      * @param   array  $element Element
      * @throws  EssenceException
-     * @return  CSV
      */
     public function __construct(array $element)
     {

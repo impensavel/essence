@@ -1,11 +1,21 @@
+## 3.0.1 - 2016-09-16
+### Added
+- [SOAP] `dump()` method implementation
+- [SOAP] more tests
+
+### Changed
+- [SOAP] Updates to the documentation
+- [SOAP] move call logic to own method
+- Code cleanups
+
 ## 3.0.0 - 2016-06-03
 ### Added
-- Implemented the `dump()` method in the XML class
+- Implemented `dump()` method in the XML class
 
 ### Changed
 - Rename some classes
 - [XML] All constructor arguments are now optional
-- [CSV|XML]Rename protected `provision()` method to `prepare()`
+- [CSV|XML] Rename protected `provision()` method to `prepare()`
 - [SOAP] Keep last request/response before throwing an exception
 
 ## 2.1.2 - 2015-09-07

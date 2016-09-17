@@ -12,12 +12,12 @@
 
 namespace Impensavel\Essence\Tests;
 
-use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_MockObject_MockBuilder as MockBuilder;
+use PHPUnit_Framework_TestCase as TestCase;
 
 use Impensavel\Essence\SOAP;
 
-class SOAPTest extends PHPUnit_Framework_TestCase
+class SOAPTest extends TestCase
 {
     /**
      * Test input file to PASS (readability)
@@ -58,46 +58,11 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instantiation (original) to PASS
+     * Test instantiation to PASS
      *
-     * @return  SOAP
+     * @return  MockBuilder
      */
-    public function testInstantiationOriginalPass()
-    {
-        $elements = array(
-            '/Foo/Bar' => array(
-                'map'     => array(),
-                'handler' => function ($element, array $properties, &$data) {
-                    // ...
-                },
-            ),
-        );
-
-        $namespaces = array(
-            'ns' => 'http://foo.bar/baz',
-        );
-
-        $options = array(
-            'uri'      => 'foo',
-            'location' => 'bar',
-        );
-
-        $essence = new SOAP($elements, null, $namespaces, $options);
-
-        $this->assertInstanceOf('\Impensavel\Essence\SOAP', $essence);
-
-        return $essence;
-    }
-
-    /**
-     * Test instantiation (mocked) to PASS
-     *
-     * @depends testInputFilesPass
-     *
-     * @param   array $files
-     * @return  SOAP
-     */
-    public function testInstantiationMockPass(array $files)
+    public function testInstantiationPass()
     {
         $elements = array(
             '/soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName' => array(
@@ -115,62 +80,67 @@ class SOAPTest extends PHPUnit_Framework_TestCase
             'm' => 'http://www.oorsprong.org/websamples.countryinfo',
         );
 
-        $response = file_get_contents($files['response']);
-
-        $essence = Mockery::mock('\Impensavel\Essence\SOAP[makeCall]', array(
+        $mockBuilder = $this->getMockBuilder('\Impensavel\Essence\SOAP')->setConstructorArgs(array(
             $elements,
             'http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL',
-            $namespaces
+            $namespaces,
         ));
 
-        $essence->shouldReceive('makeCall')->twice()->andReturn($response);
+        $this->assertInstanceOf('\Impensavel\Essence\SOAP', $mockBuilder->getMock());
 
-        $this->assertInstanceOf('\Impensavel\Essence\SOAP', $essence);
-
-        return $essence;
+        return $mockBuilder;
     }
 
     /**
      * Test extract() method to FAIL (invalid input)
      *
-     * @depends                  testInstantiationOriginalPass
+     * @depends                  testInstantiationPass
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage The input must be an associative array
      *
-     * @param   SOAP $essence
+     * @param   MockBuilder $mockBuilder
      * @return  void
      */
-    public function testExtractFailInvalidInput(SOAP $essence)
+    public function testExtractFailInvalidInput(MockBuilder $mockBuilder)
     {
+        // Do not replace methods
+        $essence = $mockBuilder->setMethods(null)->getMock();
+
         $essence->extract(true);
     }
 
     /**
      * Test extract() method to FAIL (function not set)
      *
-     * @depends                  testInstantiationOriginalPass
+     * @depends                  testInstantiationPass
      * @expectedException        \Impensavel\Essence\EssenceException
      * @expectedExceptionMessage The SOAP function is not set
      *
-     * @param   SOAP $essence
+     * @param   MockBuilder $mockBuilder
      * @return  void
      */
-    public function testExtractFailFunctionNotSet(SOAP $essence)
+    public function testExtractFailFunctionNotSet(MockBuilder $mockBuilder)
     {
+        // Do not replace methods
+        $essence = $mockBuilder->setMethods(null)->getMock();
+
         $essence->extract(array());
     }
 
     /**
      * Test extract() method to FAIL (invalid WSDL)
      *
-     * @depends           testInstantiationOriginalPass
+     * @depends           testInstantiationPass
      * @expectedException \Impensavel\Essence\EssenceException
      *
-     * @param   SOAP $essence
+     * @param   MockBuilder $mockBuilder
      * @return  void
      */
-    public function testExtractFailInvalidURL(SOAP $essence)
+    public function testExtractFailInvalidURL(MockBuilder $mockBuilder)
     {
+        // Do not replace methods
+        $essence = $mockBuilder->setMethods(null)->getMock();
+
         $essence->extract(array(
             'function' => 'baz',
         ));
@@ -179,13 +149,24 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     /**
      * Test extract() method to PASS
      *
-     * @depends testInstantiationMockPass
+     * @depends testInstantiationPass
+     * @depends testInputFilesPass
      *
-     * @param   SOAP $essence
+     * @param   MockBuilder $mockBuilder
+     * @param   array       $files
      * @return  void
      */
-    public function testExtractPass(SOAP $essence)
+    public function testExtractPass(MockBuilder $mockBuilder, array $files)
     {
+        $response = file_get_contents($files['response']);
+
+        $essence = $mockBuilder->setMethods(array(
+            'makeCall',
+        ))
+        ->getMock();
+
+        $essence->method('makeCall')->willReturn($response);
+
         $countries = array();
 
         $input = array(
@@ -200,13 +181,24 @@ class SOAPTest extends PHPUnit_Framework_TestCase
     /**
      * Test dump() method to PASS
      *
-     * @depends testInstantiationMockPass
+     * @depends testInstantiationPass
+     * @depends testInputFilesPass
      *
-     * @param   SOAP $essence
+     * @param   MockBuilder $mockBuilder
+     * @param   array       $files
      * @return  void
      */
-    public function testDumpPass(SOAP $essence)
+    public function testDumpPass(MockBuilder $mockBuilder, array $files)
     {
+        $response = file_get_contents($files['response']);
+
+        $essence = $mockBuilder->setMethods(array(
+            'makeCall',
+        ))
+        ->getMock();
+
+        $essence->method('makeCall')->willReturn($response);
+
         $input = array(
             'function' => 'ListOfCountryNamesByCode',
         );
@@ -230,5 +222,23 @@ class SOAPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(240, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName']);
         $this->assertEquals(240, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName/m:sISOCode']);
         $this->assertEquals(240, $paths['soap:Envelope/soap:Body/m:ListOfCountryNamesByCodeResponse/m:ListOfCountryNamesByCodeResult/m:tCountryCodeAndName/m:sName']);
+    }
+
+    /**
+     * Test dump() method to FAIL (invalid input)
+     *
+     * @depends                  testInstantiationPass
+     * @expectedException        \Impensavel\Essence\EssenceException
+     * @expectedExceptionMessage The input must be an associative array
+     *
+     * @param   MockBuilder $mockBuilder
+     * @return  void
+     */
+    public function testDumpFailInvalidInput(MockBuilder $mockBuilder)
+    {
+        // Do not replace methods
+        $essence = $mockBuilder->setMethods(null)->getMock();
+
+        $essence->dump('something');
     }
 }

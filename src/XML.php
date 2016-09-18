@@ -27,63 +27,55 @@ class XML extends AbstractEssence
     /**
      * XML Reader object
      *
-     * @access  protected
-     * @var     XMLReader
+     * @var  XMLReader
      */
     protected $reader;
 
     /**
      * DOM Document object
      *
-     * @access  protected
-     * @var     DOMDocument
+     * @var  DOMDocument
      */
     protected $doc;
 
     /**
      * DOM XPath object
      *
-     * @access  protected
-     * @var     DOMXPath
+     * @var  DOMXPath
      */
     protected $element;
 
     /**
      * Registered Element data
      *
-     * @access  protected
-     * @var     array
+     * @var  array
      */
     protected $data = array();
 
     /**
      * Current Element XPath stack
      *
-     * @access  protected
-     * @var     array
+     * @var  array
      */
     protected $stack = array();
 
     /**
      * Current Element XPath
      *
-     * @access  protected
-     * @var     string
+     * @var  string
      */
     protected $current;
 
     /**
      * Skip to Element XPath
      *
-     * @access  protected
-     * @var     string
+     * @var  string
      */
     protected $skip;
 
     /**
      * XML constructor
      *
-     * @access  public
      * @param   array  $elements   Elements
      * @param   array  $namespaces Namespaces
      * @throws  EssenceException
@@ -110,7 +102,6 @@ class XML extends AbstractEssence
     /**
      * Free resources
      *
-     * @access  public
      * @return  void
      */
     public function __destruct()
@@ -121,7 +112,6 @@ class XML extends AbstractEssence
     /**
      * Get the current node
      *
-     * @access  protected
      * @throws  EssenceException
      * @return  DOMNode
      */
@@ -151,7 +141,6 @@ class XML extends AbstractEssence
     /**
      * Read the next Element and handle skipping
      *
-     * @access  protected
      * @return  bool
      */
     protected function nextElement()
@@ -180,7 +169,6 @@ class XML extends AbstractEssence
     /**
      * Check if an Element XPath is mapped
      *
-     * @access  protected
      * @param   string  $xpath Element XPath
      * @return  bool
      */
@@ -194,7 +182,6 @@ class XML extends AbstractEssence
     /**
      * Get registered Element data
      *
-     * @access  protected
      * @param   string  $xpath Element XPath
      * @throws  EssenceException
      * @return  mixed
@@ -213,7 +200,6 @@ class XML extends AbstractEssence
     /**
      * Prepare data for extraction
      *
-     * @access  protected
      * @param   mixed  $input  Input data
      * @param   array  $config Configuration settings
      * @throws  EssenceException
@@ -262,7 +248,6 @@ class XML extends AbstractEssence
      * Count the children of a DOMNode
      *
      * @static
-     * @access  protected
      * @param   DOMNode $node
      * @return  int
      */
@@ -285,8 +270,7 @@ class XML extends AbstractEssence
      * Get the DONNode attributes
      *
      * @static
-     * @access  protected
-     * @param   DOMNode   $node
+     * @param   DOMNode $node
      * @return  array
      */
     protected static function DOMNodeAttributes(DOMNode $node)
@@ -304,7 +288,6 @@ class XML extends AbstractEssence
      * Get the DOMNode value
      *
      * @static
-     * @access  protected
      * @param   DOMNode $node
      * @param   bool    $associative Return associative array?
      * @param   bool    $attributes  Include node attributes?
@@ -350,7 +333,6 @@ class XML extends AbstractEssence
      * Convert a DOMNodeList into an Array
      *
      * @static
-     * @access  public
      * @param   DOMNodeList $nodeList
      * @param   bool        $associative Return associative array?
      * @param   bool        $attributes  Include node attributes?
@@ -431,7 +413,6 @@ class XML extends AbstractEssence
     /**
      * Dump XPaths and all their occurrences
      *
-     * @access  public
      * @param   mixed  $input  Input data
      * @param   array  $config Configuration settings (optional)
      * @return  array

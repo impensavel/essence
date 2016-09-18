@@ -17,7 +17,6 @@ interface EssenceInterface
     /**
      * Register an Element
      *
-     * @access  public
      * @param   array  $element Element
      * @param   string $key     Element key
      * @throws  EssenceException
@@ -28,7 +27,6 @@ interface EssenceInterface
     /**
      * Extract data
      *
-     * @access  public
      * @param   mixed  $input  Input data
      * @param   array  $config Configuration settings (optional)
      * @param   mixed  $data   User data (optional)

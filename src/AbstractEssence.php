@@ -19,16 +19,14 @@ abstract class AbstractEssence implements EssenceInterface
     /**
      * Element Property Map registry
      *
-     * @access  protected
-     * @var     array
+     * @var  array
      */
     protected $maps = array();
 
     /**
      * Data Handler registry
      *
-     * @access  protected
-     * @var     array
+     * @var  array
      */
     protected $handlers = array();
 

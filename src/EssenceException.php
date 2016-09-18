@@ -19,7 +19,6 @@ class EssenceException extends RuntimeException
     /**
      * Get the previous Exception message
      *
-     * @access  public
      * @return  string|null
      */
     public function getPreviousMessage()

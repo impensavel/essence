@@ -21,7 +21,6 @@ class CSV extends AbstractEssence
     /**
      * CSV constructor
      *
-     * @access  public
      * @param   array  $element Element
      * @throws  EssenceException
      */
@@ -33,7 +32,6 @@ class CSV extends AbstractEssence
     /**
      * Prepare data for extraction
      *
-     * @access  protected
      * @param   mixed  $input  Input data
      * @param   array  $config Configuration settings
      * @throws  EssenceException

@@ -20,39 +20,34 @@ class SOAP extends XML
     /**
      * SOAP Client object
      *
-     * @access  protected
-     * @var     SoapClient
+     * @var  SoapClient
      */
     protected $client;
 
     /**
      * Last SOAP request
      *
-     * @access  protected
-     * @var     string
+     * @var  string
      */
     protected $lastRequest;
 
     /**
      * Last SOAP response
      *
-     * @access  protected
-     * @var     string
+     * @var  string
      */
     protected $lastResponse;
 
     /**
      * Last SOAP response headers
      *
-     * @access  protected
-     * @var     array
+     * @var  array
      */
     protected $lastResponseHeaders = array();
 
     /**
      * SOAP constructor
      *
-     * @access  public
      * @param   array  $elements   Elements
      * @param   string $wsdl       WSDL file URI
      * @param   array  $namespaces Namespaces
@@ -78,7 +73,6 @@ class SOAP extends XML
     /**
      * Return the last SOAP request
      *
-     * @access  public
      * @return  string
      */
     public function lastRequest()
@@ -89,7 +83,6 @@ class SOAP extends XML
     /**
      * Return the last SOAP response
      *
-     * @access  public
      * @return  string
      */
     public function lastResponse()
@@ -100,7 +93,6 @@ class SOAP extends XML
     /**
      * Return the last SOAP response headers
      *
-     * @access  public
      * @return  array
      */
     public function lastResponseHeaders()
@@ -111,8 +103,7 @@ class SOAP extends XML
     /**
      * Make SOAP call
      *
-     * @access  public
-     * @param   array     $input Input data
+     * @param   array $input Input data
      * @throws  EssenceException
      * @return  string
      */

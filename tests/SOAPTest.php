@@ -27,6 +27,7 @@ class SOAPTest extends TestCase
     public function testInputFilesPass()
     {
         $files = array(
+            'request'  => __DIR__.'/input/soap/request.xml',
             'response' => __DIR__.'/input/soap/response.xml',
         );
 

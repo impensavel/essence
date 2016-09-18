@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://www.oorsprong.org/websamples.countryinfo">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <ns1:ListOfCountryNamesByCode/>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

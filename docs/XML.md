@@ -338,7 +338,7 @@ use Impensavel\Essence\XML;
 
 try
 {
-    $essence = new XML();
+    $essence = new XML;
 
     $paths = $essence->dump(new SplFileInfo('input.xml'));
 

@@ -94,8 +94,8 @@ class XML extends AbstractEssence
             $this->register($element, trim($key, '/'));
         }
 
-        $this->reader = new XMLReader();
-        $this->doc = new DOMDocument();
+        $this->reader = new XMLReader;
+        $this->doc = new DOMDocument;
         $this->element = new DOMXPath($this->doc);
 
         // Register namespaces

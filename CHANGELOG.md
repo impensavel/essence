@@ -1,4 +1,4 @@
-## 3.0.1 - 2016-09-16
+## 3.1.0 - 2016-09-19
 ### Added
 - [SOAP] `dump()` method implementation
 - [SOAP] more tests
